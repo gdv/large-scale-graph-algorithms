@@ -17,13 +17,132 @@ Ufficio U14-2041
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Notation}
-\begin{itemize}
-\item
+\frametitle{Example}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+    \includegraphics<1>[height=0.55\textheight]{img/Petersen_graph_3-coloring}
+  \end{column}
+  \begin{column}{0.45\textwidth}
+      \begin{block}{Notation}
+        \begin{itemize}
+          \item
 \alert{number of vertices}: $n$
-\item
+          \item
 \alert{number of edges/arcs}: $m$
-\end{itemize}
+        \end{itemize}
+      \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Better representation}
+    \includegraphics<1>{img/Caterpillar_tree}
+      \begin{block}{Almost a path}
+        \begin{itemize}
+          \item
+              Compact representation
+        \end{itemize}
+      \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Breadth-first visit}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $root$}
+$Q\gets $ a queue\;
+label root as explored\;
+$Q$.enqueue(root)\;
+\While{$Q\neq \emptyset$}{
+  $v \gets Q$.dequeue()\;
+    \ForEach{edge $(v,w)$}{
+      \If{ $w$ is not labeled as explored}{
+        label $w$ as explored\;
+        $Q$.enqueue($w$)}
+  }
+}
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Depth-first visit}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $root$}
+$S\gets $ a stack\;
+$S$.push(root)\;
+\While{$S\neq \emptyset$}{
+  $v \gets S$.pop()\;
+  \If{ $v$ is not labeled as explored}{
+    label $v$ as explored\;
+    \ForEach{edge $(v,w)$}{
+      $S$.push($w$)}
+  }
+}
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Dijkstra's algorithm}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $source$}
+$Q\gets $ a queue\;
+\ForEach{vertex $v$}{
+  dist[$v$] $\gets \infty$\;
+  $Q$.enqueue(v)
+  }
+  dist[source] $\gets 0$\;
+  \While{$Q \neq \emptyset$}{
+    $u\gets $ vertex in $Q$ minimizing dist[$u$]\;
+    $Q$.deque(u)\;
+    \ForEach{ neighbor $v$ of $u$ still in $Q$}{
+      $alt \gets dist[u] + Graph.Edges(u, v)$\;
+      \If{ alt < dist[v]}{
+        dist[v] $\gets$ alt\;
+        prev[v] $\gets$ $u$\;}
+    }}
+  \Return dist[], prev[]\;
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Dijkstra's algorithm --- priority queue}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $source$}
+$Q\gets $ a priority queue\;
+\ForEach{vertex $v$}{
+  dist[$v$] $\gets \infty$\;
+  $Q$.add\_with\_priority(v, dist[v])
+  }
+  dist[source] $\gets 0$\;
+  \While{$Q \neq \emptyset$}{
+    $u\gets Q$.extract\_min\;
+    \ForEach{ neighbor $v$ of $u$ still in $Q$}{
+      $alt \gets dist[u] + Graph.Edges(u, v)$\;
+      \If{ alt < dist[v]}{
+        dist[v] $\gets$ alt\;
+        prev[v] $\gets$ $u$\;
+        $Q$.decrease\_priority(v, alt)
+        }
+    }}
+  \Return dist[], prev[]\;
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Figures}
+
+        \begin{itemize}
+          \item
+David Eppstein, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=10261635}
+        \end{itemize}
 \end{frame}
 
 \include{license}\end{document}
