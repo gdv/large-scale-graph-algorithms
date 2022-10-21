@@ -137,6 +137,64 @@ $Q\gets $ a priority queue\;
 
 
 \begin{frame}[fragile]
+\frametitle{Find articulation points}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{connected graph $G$, vertex $root$}
+$S\gets $ a stack\;
+$S$.push((root, nil))\;
+$d\gets -1$\;
+\While{$S\neq \emptyset$}{
+  $d\gets d+1$\;
+  $(v, p) \gets S$.peek()\;
+  \eIf{$v$ is not explored}{
+    label $v$ as explored; parent$(v)\gets p$; $depth[v]\gets d$\;
+    lowpoint$[v] = $depth$[v] $\;
+    \ForEach{edge $(v,w)$}{
+      $S$.push($(w,v)$)\;
+    }
+  }{
+lowpoint$[v] = \min \left\{ \min_{w\in N(v), w\neq p} \{ depth[w] \}, \min_{w\in N(v), parent(w)=v} \{ lowpoint[w] \}  \right\}$
+  }
+    $d\gets d-1$\;
+    $v \gets S$.pop()\;
+  }
+\end{algorithm}}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Find bridges}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{connected graph $G$, vertex $root$}
+$S\gets $ a stack\;
+$S$.push((root, nil))\;
+$x\gets -1$\;
+\While{$S\neq \emptyset$}{
+  $(v, p) \gets S$.peek()\;
+  \eIf{$v$ is not explored}{
+    \(x\gets x+1\)\;
+    label $v$ as explored; P$(v)\gets p$; \(num[v]\gets x\)\;
+    \ForEach{edge $(v,w)$}{
+      $S$.push($(w,v)$)\;
+    }
+  }{
+   $nd[v] = 1 + \sum_{w\in N(v), P(w)=v} nd[w]$\;
+  $l[v] = \min  \left\{ num[v], \min_{w\in N(v), w\neq p, P(w)\neq v} \{ num[w] \}, \min_{w\in children(v)} \{ l[w] \}  \right\}$\;
+  $h[v] = \max  \left\{ num[v], \max_{w\in N(v), w\neq p, P(w)\neq v} \{ num[w] \}, \max_{w\in children(v)} \{ h[w] \}  \right\}$\;
+  }
+    $v \gets S$.pop()\;
+  }
+\end{algorithm}}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
 \frametitle{Figures}
 
         \begin{itemize}
