@@ -27,7 +27,8 @@ while len(uncolored_degree) > 0:
     # number of neighbors that are uncolored.
     # This is equivalend to maximizing saturation * (N+1) + D, where N is the
     # number of uncolored vertices and D is the number of uncolored neighbors
-    max_saturation = 0
+    max_saturation = -1
+    best = -1
     for v in uncolored_degree.keys():
         sat_v = saturation[v] * (len(uncolored_degree.keys()) + 1) + uncolored_degree[v]
         if sat_v > max_saturation:
