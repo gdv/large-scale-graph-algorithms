@@ -3,7 +3,6 @@
 import networkx as nx
 import argparse
 import collections
-import pdb
 
 parser = argparse.ArgumentParser()
 parser.add_argument("filename", help="graph_filename")
@@ -16,7 +15,7 @@ num_colors = 0
 # The RLS algorithm finds a maximal indepenedent set and assigns a new color to
 # all vertices in such set
 # The independent set must contain the vertex with largest degree
- 
+
 n = len(g.nodes())
 todo = n
 
@@ -27,7 +26,7 @@ while len(g.nodes()) > 0:
         color[w] = num_colors
     g.remove_nodes_from(independent_set)
     print(f"Removing {independent_set}")
-    num_colors +=1 
+    num_colors += 1
 
     todo -= len(independent_set)
     print(f"still {todo} ({int(todo / n * 100)})")

@@ -1,0 +1,49 @@
+\include{header}
+
+\begin{document}
+
+
+\begin{frame}[fragile]
+\frametitle{Expectation Argument}
+\begin{block}{Lemma}
+Let \(X\) be a random variable on a discrete space \(S\) such that \(E(X)=\mu\).
+Then \(Pr[X\ge \mu] > 0\) and \(Pr[X\le \mu] > 0\).
+      \end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Max cut}
+\begin{algorithm}[H]
+\KwData{graph \g}
+\ForEach{vertex \(v\in V\)}{
+  Assign \(v\) to \(A\) or to \(B\) with probability \(1/2\)
+}
+\Return{\((A,B)\)}
+\end{algorithm}
+
+\begin{block}{Lemma 1 (to prove)}
+The expected value of the number of edges in the cut \((A,B)\) is at least \(m/2\)
+\end{block}
+\begin{block}{Lemma 2 (to prove)}
+The probability that the cut \((A,B)\) has at least \(m/2\) edges
+is  \(\ge \frac{1}{m/2 + 1}\)
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sample and modifying}
+\begin{block}{Lemma 1 (to prove)}
+Let \g be a undirected graph.
+Then \g has an independent set with at least \(\frac{n^{2}}{4m}\) vertices.
+\end{block}
+
+Hint 1: \(d = \frac{2m}{n}\) is the average degree.
+
+Hint 2: the proof is a probabilistic algorithm
+\end{frame}
+
+
+
+\include{license}\end{document}
