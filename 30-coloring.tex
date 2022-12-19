@@ -228,26 +228,30 @@ back to \(b\) for some iterations.
 \frametitle{Ant Colony}
 \begin{algorithm}[H]
 \KwData{graph \g}
-\(t_{u,v}\gets 1 \ \forall u\neq v\in V\), \(k\gets n\), \(B\gets\) single vertices\tcc{\(t_{u,v}\): trail matrix}
+\(t_{u,v}\gets 1 \ \forall u\neq v\in V\), \(k\gets n\), \(B\gets\) single
+vertices
+\tcc{\(t_{u,v}\): trail matrix}
 \While{not stopping condition}{
-\(\delta_{u,v}\gets 0\ \forall u\neq v\in V\)\tcc{\(\delta_{u,v}\) is the update matrix}
+  \(\delta_{u,v}\gets 0\ \forall u\neq v\in V\)
+  \tcc{\(\delta_{u,v}\) is the update matrix}
   \ForEach{ant \(a\)}{
     \(S \gets \) BuildSolution\((k)\)\tcc{only \(k\) colors allowed}
     \If{\(S\) is a partial solution}{
       \(f_{v,i}\gets \sum_{u} f_{u,v} / |S_{i}|\)\;
       complete the solution \(S\) with probability
-      \(Pr[v,i] = f_{v,i}^{\alpha}g_{v,i}^{\beta} / \sum_{u} f_{u,i}^{\alpha}g_{u,i}^{\beta}\)
-    }
+      \(Pr[v,i] = f_{v,i}^{\alpha} / \sum_{u} f_{u,i}^{\alpha}\)
+      \tcc{\(\alpha\): parameter}
 \(\delta_{u,v}\gets \delta_{u,v} + F(S)\ \forall u\neq v, c(u)=c(v)\in V\)\;
 \If{\(S\) is feasible and better than \(B\)}{
   \(B\gets S\), \(k\gets |B| - 1\)
 }
   }
-  \(t_{u,v}\gets r t_{u,v} + \delta_{u,v}\ \forall u\neq v\in V\)\tcc{\(r\) is
-    the evaporating factor}
-}
+  \(t_{u,v}\gets r t_{u,v} + \delta_{u,v}\ \forall u\neq v\in V\)
+  \tcc{\(r\) is the evaporating factor}
+}}
 \end{algorithm}
 \end{frame}
+
 
 
 
