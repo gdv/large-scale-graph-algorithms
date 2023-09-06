@@ -1,2 +1,11 @@
 data/*.gz
 data/*.zst
+*.vrb
+*.aux
+*.log
+*.fls
+*.nav
+*.out
+*.toc
+*.snm
+*.fdb*
