@@ -9,3 +9,7 @@ data/*.zst
 *.toc
 *.snm
 *.fdb*
+src/target
+.ipynb_checkpoints
+.auctex-auto/
+.snakemake/
