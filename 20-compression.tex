@@ -1,0 +1,318 @@
+\include{header}
+
+\begin{document}
+
+% \begin{frame}[fragile]
+%     \frametitle{Graph Compression}
+% \begin{columns}
+%   \begin{column}{0.45\textwidth}
+%     \includegraphics<1>[height=0.55\textheight]{img/Petersen_graph_3-coloring}
+%   \end{column}
+%   \begin{column}{0.45\textwidth}
+%       \begin{block}{Notation}
+%         \begin{itemize}
+%           \item
+% \alert{number of vertices}: $n$
+%           \item
+% \alert{number of edges/arcs}: $m$
+%         \end{itemize}
+%       \end{block}
+%   \end{column}
+% \end{columns}
+% \end{frame}
+%
+\begin{frame}[fragile]
+\frametitle{Lossless Graph Compression}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\begin{figure}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name/\label in {{(1,2)/a/a}, {(4,2)/b/b}, {(0,0)/d/g},
+      {(1,-1)/c/f}, {(5,0)/e/d}, {(4,-1)/f/e}, {(0,1)/g/h},
+      {(5,1)/h/c}}
+        \node[vertex] (\name) at \pos {$\label$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {b/a, d/b,c/a,c/b,
+                                c/d,     e/d,e/c,
+                                        d/f, f/e, f/g,
+                                         f/h, g/e,g/f, g/h}
+        \path[edge] (\source) --  (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lossless Graph Compression}
+\begin{block}{Main ideas}
+\begin{itemize}
+\item
+      Exploit repetitions
+\item
+      Exploit distribution of values
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Huffman coding}
+\begin{algorithm}[H]
+\KwData{Set \(O\) of objects, each object \(o_{i}\) has probability \(p_{i}\)}
+\eIf{$|O| > 2$}{
+  Pick two objects \(o_{i}, o_{j}\) with smallest probability\;
+  \(x\gets \) new object with probability \(p_{i} + p_{j}\)\;
+  \(h \gets \) Huffman\((O\setminus \{o_{i}, o_{j}\} \cup \{x\})\)\;
+  \(h(o_{i}) \gets h(x) 0\)\;
+  \(h(o_{j}) \gets h(x) 1\)\;
+  Remove \(h(x)\)\;
+}{
+  \(h(o_{1}) \gets 0\)\;
+  \(h(o_{2}) \gets 1\)\;
+}
+  \Return \(h\)\;
+\end{algorithm}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Elias \(\gamma\) code}
+\begin{block}{binary code for \(x\ge 1\)}
+\begin{enumerate}
+\item
+      \(N= \lfloor \log_{2} x\rfloor\)
+\item
+      \(N\) zeroes \(\cdot\) 1 one  \(\cdot\) binary representation of \(x\),
+      omitting the leading bit
+\item
+      uses \(2\lfloor \log_{2} x\rfloor + 1\) bits
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Elias \(\delta\) code}
+\begin{block}{binary code for \(x\ge 1\)}
+\begin{enumerate}
+\item
+      \(N= \lfloor \log_{2} x\rfloor\)
+\item
+      \(\gamma(N+1)\) \(\cdot\) binary representation of \(x\), omitting the
+      leading bit
+\item
+      uses
+      \(\lfloor \log_{2} x\rfloor + 2 \lfloor \log_{2} \left(\lfloor \log_{2} x\rfloor + 1 \right)\rfloor
+      +1\) bits
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Variable-length nibble code}
+\begin{block}{binary code for \(x\ge 1\)}
+\begin{enumerate}
+\item
+      \(p \gets\) the binary representation of \(n\), left-padded with zeroes,
+      so that its length is a multiple of 3
+\item
+      Split \(p\) into 3-bit blocks
+\item
+      prepend each block with a zero, replace the leading 0 of the last block with
+      a one.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Minimal binary code}
+\begin{block}{binary code for \(0\le x\le z-1\)}
+\begin{enumerate}
+\item
+\(s = \lceil \log_{2}x \rceil\)
+\item
+      \(p \gets s^{s}-z\)
+\item
+      If \(x < p\) then output the \(x\)-th binary word of length \(s-1\)
+\item
+      If \(x \ge p\) then output the \((x-z+2^{s})\)-th binary word of length \(s\)
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\(\zeta_{k}\) code}
+\begin{block}{binary code for \(2^{hk}\le x\le 2^{(h+1)k}-1\)}
+\begin{enumerate}
+\item
+      \(k\): shrinking factor
+\item
+      h+1 in unary \(\cdot\) minbincode of \(x - 2^{hk}\), with
+\(z = 2^{(h+1)k} - 2^{hk} -1\)
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Move-to-front transform}
+
+\begin{enumerate}
+\item
+      Maintain the list \(L\) of recently used objects
+\item
+      Encode an object as its index in \(L\)
+\item
+      Move the object to the head of \(L\)
+\end{enumerate}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Run-length encoding}
+
+AAAAAABBBB \(\rightarrow\) (A,6)(B,4)
+
+\only<2>{
+\begin{block}{Binary alphabet}
+\begin{itemize}
+\item
+      0-runs and 1-runs alternate
+\item
+      start with 1-run (0-length if 0-run)
+\item
+      first, number of runs
+\item
+      then run-lengths (lengths decremented by 1)
+\end{itemize}
+\end{block}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lossless Graph Compression}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\begin{figure}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name/\label in {{(1,2)/a/a}, {(4,2)/b/b}, {(0,0)/d/g},
+      {(1,-1)/c/f}, {(5,0)/e/d}, {(4,-1)/f/e}, {(0,1)/g/h},
+      {(5,1)/h/c}}
+        \node[vertex] (\name) at \pos {$\label$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {b/a, d/b,c/a,c/b,
+                                c/d,     e/d,e/c,
+                                        d/f, f/e, f/g,
+                                         f/h, g/e,g/f, g/h}
+        \path[edge] (\source) --  (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Lossless Graph Compression}
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+
+\begin{figure}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(0,1)/1}, {(2,2)/2}, {(4,2)/4},
+      {(2,0)/3}, {(4,0)/5}, {(6,2)/6}, {(6,0)/7},
+      {(8,1)/8}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {2/1, 4/2,3/1,3/2,
+                                3/4,     5/4,5/3,
+                                         6/4,6/5, 6/8,
+                                         7/5,7/6, 7/8}
+        \path[edge] (\source) --  (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Gap representation}
+\begin{block}{Delta}
+\begin{enumerate}
+\item
+      adjacency list of \(v\)
+\item
+      store difference with previous vertex
+\item
+      store difference with \(v\)
+\end{enumerate}
+\end{block}
+\pause
+\begin{block}{Example adj\((3)\)}
+-2, 1, 2, 1
+\end{block}
+\pause
+\begin{block}{Assumptions?}
+\pause
+Neighbors of a vertex are close to the vertex.
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reference compression}
+\begin{block}{\(N(x)\) and \(N(y)\)}
+\begin{enumerate}
+\item
+      \(N(y)\) is a previous vertex
+\item
+
+      which elements of \(N(x)\) are not in \(N(y)\)?
+\item
+      \(N(x) \setminus N(y)\)
+\end{enumerate}
+\end{block}
+\pause
+\begin{block}{Example adj\((4)\)}
+adj\((2)\) = [1, 3, 4];
+adj\((4)\) = [2, 3, 5, 6]\(\rightarrow\) \(\langle 2, 101_{2}, [1, 1]\rangle\)\\
+using the triple \(\langle\) previous vertex, characteristic vector of the
+vertices of \(N(y)\) that are not in \(N(x)\), the encoding of \(N(x) \setminus N(y)\rangle\)
+\end{block}
+\pause
+\begin{block}{Assumptions?}
+\pause
+\(N(x)\) and \(N(y)\) are almost identical
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Interval encoding}
+\pause
+\begin{block}{\([b,e]\)}
+\begin{itemize}
+      \item
+      \([b, e - b]\)
+      \item if all intervals are longer than a threshold \(L\) \(\Rightarrow\)
+      decrement all lengths by \(L\)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Figures}
+
+        \begin{itemize}
+          \item
+David Eppstein, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=10261635}
+        \end{itemize}
+\end{frame}
+
+\include{license}\end{document}

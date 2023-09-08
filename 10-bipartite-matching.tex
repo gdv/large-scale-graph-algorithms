@@ -1,0 +1,115 @@
+\include{header}
+
+\begin{document}
+
+% \begin{frame}[fragile]
+%     \frametitle{Graph Compression}
+% \begin{columns}
+%   \begin{column}{0.45\textwidth}
+%     \includegraphics<1>[height=0.55\textheight]{img/Petersen_graph_3-coloring}
+%   \end{column}
+%   \begin{column}{0.45\textwidth}
+%       \begin{block}{Notation}
+%         \begin{itemize}
+%           \item
+% \alert{number of vertices}: $n$
+%           \item
+% \alert{number of edges/arcs}: $m$
+%         \end{itemize}
+%       \end{block}
+%   \end{column}
+% \end{columns}
+% \end{frame}
+%
+
+\begin{frame}[fragile]
+\frametitle{Bipartite graphs}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\begin{figure}
+\begin{tikzpicture}[scale=1.5, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(0,1)/a}, {(2,1)/b}, {(0,2)/c},
+      {(2,2)/d}, {(2,3)/e}, {(2,4)/f}, {(0,3)/g},
+      {(2,5)/h}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {b/a, g/b, c/b,
+                                c/d, e/c,
+                                f/g,
+                                f/c, g/e, g/f, g/h}
+        \path[edge] (\source) --  (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Bipartite graphs}
+\begin{block}{Lemma 1}
+Let \(G=\langle V,E\rangle\) be a graph.
+Then \(G\) is bipartite if and only if it does not have any odd cycle.
+\end{block}
+
+\begin{block}{Lemma 2}
+Let \(G=\langle V,E\rangle\) be a graph and let \(M\) be its \textbf{incidence} matrix.
+Then \(G\) is bipartite if and only if \(M\) is totally unimodular.
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Max cardinality matching}
+
+\begin{block}{Instance}
+An unweighted graph \g with bipartition \(A,B\)
+\end{block}
+
+\begin{align}
+  \max \sum_{(v,w)\in E} e_{v,w}                  \quad&\text{subject to }\\
+  \sum_{w\in B} e_{v,w} \le 1 \quad& \forall v\in A           \\
+  \sum_{v\in A} e_{v,w} \le 1 \quad& \forall w\in B           \\
+  e_{v,w}\in \{0,1\}         \quad& \forall (v,w)\in E \notag
+\end{align}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Max cardinality matching}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{matching} = [draw,thick,green,-]
+\begin{figure}
+\begin{tikzpicture}[scale=1.5, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(0,1)/a}, {(2,1)/b}, {(0,2)/c},
+      {(2,2)/d}, {(2,3)/e}, {(2,4)/f}, {(0,3)/g},
+      {(2,5)/h}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {g/b, c/b, c/d, f/g, f/c, g/e, g/f}
+        \path[edge] (\source) --  (\dest);
+    \foreach \source/ \dest in {b/a, g/h, e/c}
+     \path[matching] (\source) --  (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Max weighted matching}
+
+\begin{block}{Instance}
+An edge-weighted graph \g with bipartition \(A,B\), with weight function \(c\)
+\end{block}
+
+\begin{align}
+  \max \sum_{(v,w)\in E} c(v,w)e_{v,w}                  \quad&\text{subject to }\\
+  \sum_{w\in B} e_{v,w} \le 1 \quad& \forall v\in A           \\
+  \sum_{v\in A} e_{v,w} \le 1 \quad& \forall w\in B           \\
+  e_{v,w}\in \{0,1\}         \quad& \forall (v,w)\in E \notag
+\end{align}
+\end{frame}
+\include{license}\end{document}

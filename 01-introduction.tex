@@ -1,0 +1,269 @@
+\include{header}
+
+\begin{document}
+
+\begin{frame}\frametitle{Gianluca Della Vedova}
+\begin{itemize}
+\item
+Large-Scale Graph Algorithms
+\item
+Ufficio U14-2041
+\item
+    \url{https://www.unimib.it/gianluca-della-vedova}
+\item
+\url{gianluca.dellavedova@unimib.it}
+\item\url{https://github.com/gdv/large-scale-graph-algorithms}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+    \includegraphics<1>[height=0.55\textheight]{img/Petersen_graph_3-coloring}
+  \end{column}
+  \begin{column}{0.45\textwidth}
+      \begin{block}{Notation}
+        \begin{itemize}
+          \item
+\alert{number of vertices}: $n$
+          \item
+\alert{number of edges/arcs}: $m$
+        \end{itemize}
+      \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Better representation}
+    \includegraphics<1>{img/Caterpillar_tree}
+      \begin{block}{Almost a path}
+        \begin{itemize}
+          \item
+              Compact representation
+        \end{itemize}
+      \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Breadth-first visit}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $root$}
+$Q\gets $ a queue\;
+label root as explored\;
+$Q$.enqueue(root)\;
+\While{$Q\neq \emptyset$}{
+  $v \gets Q$.dequeue()\;
+    \ForEach{edge $(v,w)$}{
+      \If{ $w$ is not labeled as explored}{
+        label $w$ as explored\;
+        $Q$.enqueue($w$)}
+  }
+}
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Depth-first visit}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $root$}
+$S\gets $ a stack\;
+$S$.push(root)\;
+\While{$S\neq \emptyset$}{
+  $v \gets S$.pop()\;
+  \If{ $v$ is not labeled as explored}{
+    label $v$ as explored\;
+    \ForEach{edge $(v,w)$}{
+      $S$.push($w$)}
+  }
+}
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Dijkstra's algorithm}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $source$}
+$Q\gets $ a queue\;
+\ForEach{vertex $v$}{
+  dist[$v$] $\gets \infty$\;
+  $Q$.enqueue(v)
+  }
+  dist[source] $\gets 0$\;
+  \While{$Q \neq \emptyset$}{
+    $u\gets $ vertex in $Q$ minimizing dist[$u$]\;
+    $Q$.deque(u)\;
+    \ForEach{ neighbor $v$ of $u$ still in $Q$}{
+      $alt \gets dist[u] + Graph.Edges(u, v)$\;
+      \If{ alt < dist[v]}{
+        dist[v] $\gets$ alt\;
+        prev[v] $\gets$ $u$\;}
+    }}
+  \Return dist[], prev[]\;
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Dijkstra's algorithm --- priority queue}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{graph $G$, vertex $source$}
+$Q\gets $ a priority queue\;
+\ForEach{vertex $v$}{
+  dist[$v$] $\gets \infty$\;
+  $Q$.add\_with\_priority(v, dist[v])
+  }
+  dist[source] $\gets 0$\;
+  \While{$Q \neq \emptyset$}{
+    $u\gets Q$.extract\_min\;
+    \ForEach{ neighbor $v$ of $u$ still in $Q$}{
+      $alt \gets dist[u] + Graph.Edges(u, v)$\;
+      \If{ alt < dist[v]}{
+        dist[v] $\gets$ alt\;
+        prev[v] $\gets$ $u$\;
+        $Q$.decrease\_priority(v, alt)
+        }
+    }}
+  \Return dist[], prev[]\;
+\end{algorithm}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Find articulation points}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{connected graph $G$, vertex $root$}
+$S\gets $ a stack\;
+$S$.push((root, nil))\;
+$d\gets -1$\;
+\While{$S\neq \emptyset$}{
+  $d\gets d+1$\;
+  $(v, p) \gets S$.peek()\;
+  \eIf{$v$ is not explored}{
+    label $v$ as explored; parent$(v)\gets p$; $depth[v]\gets d$\;
+    lowpoint$[v] = $depth$[v] $\;
+    \ForEach{edge $(v,w)$}{
+      $S$.push($(w,v)$)\;
+    }
+  }{
+lowpoint$[v] = \min \left\{ \min_{w\in N(v), w\neq p} \{ depth[w] \}, \min_{w\in N(v), parent(w)=v} \{ lowpoint[w] \}  \right\}$
+  }
+    $d\gets d-1$\;
+    $v \gets S$.pop()\;
+  }
+\end{algorithm}}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Find bridges}
+\scalebox{.8}{
+\begin{algorithm}[H]
+\KwData{connected graph $G$, vertex $root$}
+$S\gets $ a stack\;
+$S$.push((root, nil))\;
+$x\gets -1$\;
+\While{$S\neq \emptyset$}{
+  $(v, p) \gets S$.peek()\;
+  \eIf{$v$ is not explored}{
+    \(x\gets x+1\)\;
+    label $v$ as explored; P$(v)\gets p$; \(num[v]\gets x\)\;
+    \ForEach{edge $(v,w)$}{
+      $S$.push($(w,v)$)\;
+    }
+  }{
+   $nd[v] = 1 + \sum_{w\in N(v), P(w)=v} nd[w]$\;
+  $l[v] = \min  \left\{ num[v], \min_{w\in N(v), w\neq p, P(w)\neq v} \{ num[w] \}, \min_{w\in children(v)} \{ l[w] \}  \right\}$\;
+  $h[v] = \max  \left\{ num[v], \max_{w\in N(v), w\neq p, P(w)\neq v} \{ num[w] \}, \max_{w\in children(v)} \{ h[w] \}  \right\}$\;
+  }
+    $v \gets S$.pop()\;
+  }
+\end{algorithm}}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Max flow}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=black!80]
+\tikzstyle{sourcesink} = [vertex, accepting]
+\tikzstyle{edge} = [draw,thick,->]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+\begin{figure}
+\begin{tikzpicture}[scale=1.8, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(0,2)/a}, {(2,2)/b}, {(5,2)/c},
+      {(0,0)/d}, {(2.5,0.5)/e}, {(2,-1)/f}, {(4,-1)/g}}
+       \node[vertex] (\name) at \pos {$\name$};
+    \foreach \pos/\name in {{(-2,1)/s}, {(6,0)/t}}
+       \node[sourcesink] (\name) at \pos {$\name$};
+       % Connect vertices with edges and draw weights
+       \foreach \source/ \dest /\weight in {a/b/(7), b/c/(8),
+         d/a/(5),d/b/(9),
+                                         e/b/(7), e/c/(5),
+                                         d/f/(6), f/e/(8),
+                                         g/e/(9), f/g/(11),
+                                         s/a/(9), s/d/(8),
+                                       c/t/(10), e/t/(6), g/t/(6) }
+        \path[edge] (\source) -- node[weight] {$\weight$} (\dest);
+    % Start animating the vertex and edge selection.
+%    \foreach \vertex / \fr in {d/1,a/2,f/3,b/4,e/5,c/6,g/7}
+%        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+    % For convenience we use a background layer to highlight edges
+    % This way we don't have to worry about the highlighting covering
+    % weight labels.
+%    \begin{pgfonlayer}{background}
+%        \pause
+%        \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+%            \path<+->[selected edge] (\source.center) -- (\dest.center);
+%        \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+%            \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+%    \end{pgfonlayer}
+\end{tikzpicture}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Max flow -- Min cut theorem}
+
+
+Let \(f\) be a flow of a graph \(G=(V,E)\).
+Then the following three conditions are equivalent:
+
+\begin{enumerate}
+\item
+      \(f\) is a maximum flow
+\item
+      the residual graph has no augmenting path
+\item
+      there is a cut \((S,T)\) of \(G\) such that \(c(S,T) = |f|\)
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Figures}
+
+        \begin{itemize}
+          \item
+David Eppstein, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=10261635}
+        \end{itemize}
+\end{frame}
+
+\include{license}\end{document}
