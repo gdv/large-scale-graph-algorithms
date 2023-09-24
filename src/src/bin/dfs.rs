@@ -50,7 +50,9 @@ fn main() {
 
     for v in g.nodes() {
         let node_name = v;
-        let parent_node = parent[&v];
-        log::info!("parent of {:?} is {:?}", node_name, parent_node);
+        let parent_node = parent.get(&v);
+        if parent_node.is_some() {
+            log::info!("parent of {:?} is {:?}", node_name, Some(parent_node));
+        }
     }
 }
