@@ -1,0 +1,18 @@
+[package]
+name = "lsga"
+version = "0.1.0"
+description = "Programs for the LSGA course"
+license = "MIT"
+edition = "2021"
+
+[profile.release]
+lto = "thin"
+
+[dependencies]
+clap = "4.4.4"
+clap-verbosity-flag = "2.0.1"
+env_logger = "0.10.0"
+flate2 = "1.0.27"
+float-cmp = "0.9.0"
+log = "0.4.20"
+petgraph = "0.6.4"
