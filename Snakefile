@@ -50,7 +50,29 @@ programs = [
         "directed": [1],
         "weighted": [1]
     },
+    {
+        "name": "st_shortest_path_bidirectional",
+        "exe": "src/target/release/st-shortest-path-bidirectional",
+        "group": "shortest",
+        "directed": [1],
+        "weighted": [1]
+    },
+    {
+        "name": "st_shortest_path",
+        "exe": "src/target/release/st-shortest-path",
+        "group": "shortest",
+        "directed": [1],
+        "weighted": [1]
+    },
+    {
+        "name": "st_shortest_path_petgraph",
+        "exe": "src/target/release/st-shortest-path-petgraph",
+        "group": "shortest",
+        "directed": [1],
+        "weighted": [1]
+    },
 ]
+
 program_names = [p['name'] for p in programs]
 
 print(graphs)
@@ -122,10 +144,43 @@ rule shortest_nx:
     output:
         "results/{graph}-shortestnx.txt"
     params:
-        source = graphs_dict[{graph}]['source'],
-        target = graphs_dict[{graph}]['target'],
+        source = lambda g: int(graphs[graphs.graph == g.graph].source.iloc[0]),
+        target = lambda g: int(graphs[graphs.graph == g.graph].target.iloc[0]),
     shell:
         "/usr/bin/time -v src/shortest-path.py --graph={input}  --source={params.source}  --target={params.target} 2> {output}"
+
+rule st_shortest_path_petgraph:
+    input:
+        "data/{graph}.csv.gz",
+    output:
+        "results/{graph}-st_shortest_path_petgraph.txt"
+    params:
+        source = lambda g: int(graphs[graphs.graph == g.graph].source.iloc[0]),
+        target = lambda g: int(graphs[graphs.graph == g.graph].target.iloc[0]),
+    shell:
+        "/usr/bin/time -v src/target/release/st-shortest-path-petgraph --graph={input}  --source={params.source}  --target={params.target} 2> {output}"
+
+rule st_shortest_path:
+    input:
+        "data/{graph}.csv.gz",
+    output:
+        "results/{graph}-st_shortest_path.txt"
+    params:
+        source = lambda g: int(graphs[graphs.graph == g.graph].source.iloc[0]),
+        target = lambda g: int(graphs[graphs.graph == g.graph].target.iloc[0]),
+    shell:
+        "/usr/bin/time -v src/target/release/st-shortest-path --graph={input}  --source={params.source}  --target={params.target} 2> {output}"
+
+rule st_shortest_path_bidirectional:
+    input:
+        "data/{graph}.csv.gz",
+    output:
+        "results/{graph}-st_shortest_path_bidirectional.txt"
+    params:
+        source = lambda g: int(graphs[graphs.graph == g.graph].source.iloc[0]),
+        target = lambda g: int(graphs[graphs.graph == g.graph].target.iloc[0]),
+    shell:
+        "/usr/bin/time -v src/target/release/st-shortest-path-bidirectional --graph={input}  --source={params.source}  --target={params.target} 2> {output}"
 
 #  The exe field of the datasets table contains the name of a script that
 #  receives in stdin the file downloaded and prints the file in csv/tsv format

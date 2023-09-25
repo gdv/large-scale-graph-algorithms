@@ -1,6 +1,7 @@
-graph,Nodes,Edges,Directed,Weighted,ext,url,Description,Origin,Website,exe,connectivity,coloring,flow,shortest,source,terminal
+graph,Nodes,Edges,Directed,Weighted,ext,url,Description,Origin,Website,exe,connectivity,coloring,flow,shortest,source,target
 amazon0302,262111,1234877,0,0,txt,http://snap.stanford.edu/data/amazon0302.txt.gz,Amazon product co-purchasing network from March 2 2003,SNAP,http://snap.stanford.edu/data/amazon0302.html,ren.sh,1,1,0,0,,
 RoadNet-CA,1965206,2766607,0,0,csv,http://snap.stanford.edu/data/roadNet-CA.txt.gz,A road network of California,SNAP,http://snap.stanford.edu/data/roadNet-CA.html,ren.sh,1,1,0,0,,
 Soc-sign-bitcoinalpha,3783,24186,1,1,tsv,https://snap.stanford.edu/data/soc-sign-bitcoinalpha.csv.gz,who-trusts-whom network of people who trade using Bitcoin,SNAP,http://snap.stanford.edu/data/soc-sign-bitcoin-alpha.html,cut4.sh,1,0,0,0,,
 rome99,3353,8859,1,1,csv,https://www.diag.uniroma1.it/challenge9/data/rome/rome99.gr,A road network of Rome,DIMACS,https://www.diag.uniroma1.it/challenge9/download.shtml,dimacs9totsv.sh,1,0,0,1,1,3188
-USA-road-t.USA,23947347,57708624,1,1,tsv,https://www.diag.uniroma1.it/challenge9/data/USA-road-d/USA-road-d.USA.gr.gz,A road network of the USA,DIMACS,https://www.diag.uniroma1.it/challenge9/download.shtml,dimacs9totsv.sh,1,0,0,0,,
+USA-road-t.USA,23947347,57708624,1,1,tsv,https://www.diag.uniroma1.it/challenge9/data/USA-road-d/USA-road-d.USA.gr.gz,A road network of the USA,DIMACS,https://www.diag.uniroma1.it/challenge9/download.shtml,dimacs9totsv.sh,1,0,0,0,5,20000000
+USA-road-t.NY,,,1,1,tsv,https://www.diag.uniroma1.it/challenge9/data/USA-road-d/USA-road-d.NY.gr.gz,A road network of NY,DIMACS,https://www.diag.uniroma1.it/challenge9/download.shtml,dimacs9totsv.sh,1,0,0,1,1,260000
