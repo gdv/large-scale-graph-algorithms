@@ -170,7 +170,7 @@
 						$S$.push($(w,v)$)\;
 					}
 				}{
-					lowpoint$[v] = \min \left\{ \min_{w\in N(v), w\neq p} \{ depth[w] \}, \min_{w\in N(v), parent(w)=v} \{ lowpoint[w] \}  \right\}$
+					lowpoint$[v] = \min \left\{ depth[v], \min_{w\in N(v), w\neq p} \{ depth[w] \}, \min_{w\in N(v), parent(w)=v} \{ lowpoint[w] \}  \right\}$
 				}
 				$d\gets d-1$\;
 				$v \gets S$.pop()\;
