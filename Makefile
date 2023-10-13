@@ -34,5 +34,5 @@ figs: $(pdfs) $(burstpdfs) $(externalfigs) $(svgfigspdf)
 %.pdf : %.ipe
 		ipetoipe -pdf $<
 
-%.pdf : %.svg
+img/%.pdf : img/%.svg
 	inkscape -D $< -o $@  --export-latex

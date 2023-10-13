@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{156.5042935bp}%
+    \setlength{\unitlength}{149.8010329bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,27 +50,28 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.5855667)%
+  \begin{picture}(1,0.6117695)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{bridges.pdf}}%
-    \put(0.00289445,0.21615562){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{1}\end{tabular}}}}%
-    \put(0.95853617,0.05326831){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{18}\end{tabular}}}}%
-    \put(0.95853921,0.32819176){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{17}\end{tabular}}}}%
-    \put(0.78880633,0.0532205){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{16}\end{tabular}}}}%
-    \put(0.64025715,0.40842975){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{15}\end{tabular}}}}%
-    \put(0.53003635,0.40792426){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{14}\end{tabular}}}}%
-    \put(0.49815888,0.55879772){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{13}\end{tabular}}}}%
-    \put(0.33116014,0.40784329){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{12}\end{tabular}}}}%
-    \put(0.60671164,0.06759733){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{11}\end{tabular}}}}%
-    \put(0.78881531,0.2616814){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{10}\end{tabular}}}}%
-    \put(0.64984156,0.32873455){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{9}\end{tabular}}}}%
-    \put(0.50128326,0.25688913){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{8}\end{tabular}}}}%
-    \put(0.38627047,0.13708392){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{7}\end{tabular}}}}%
-    \put(0.26886147,0.02446741){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{6}\end{tabular}}}}%
-    \put(0.2664654,0.32877214){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{5}\end{tabular}}}}%
-    \put(0.1490564,0){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{4}\end{tabular}}}}%
-    \put(0.00049824,0.00050631){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{3}\end{tabular}}}}%
-    \put(0.15384868,0.21614927){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{2}\end{tabular}}}}%
+    \put(0.00302397,0.2258281){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{1}\end{tabular}}}}%
+    \put(0.95590925,0.03901515){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{18}\end{tabular}}}}%
+    \put(0.94961909,0.3898833){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{17}\end{tabular}}}}%
+    \put(0.82410364,0.055602){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{16}\end{tabular}}}}%
+    \put(0.66890722,0.42670606){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{15}\end{tabular}}}}%
+    \put(0.56024816,0.42594928){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{14}\end{tabular}}}}%
+    \put(0.52045038,0.58380267){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{13}\end{tabular}}}}%
+    \put(0.34597882,0.42609336){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{12}\end{tabular}}}}%
+    \put(0.63386063,0.07062215){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{11}\end{tabular}}}}%
+    \put(0.82411303,0.27339106){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{10}\end{tabular}}}}%
+    \put(0.67892051,0.34344469){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{9}\end{tabular}}}}%
+    \put(0.52371456,0.26838434){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{8}\end{tabular}}}}%
+    \put(0.40355521,0.14321812){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{7}\end{tabular}}}}%
+    \put(0.28089242,0.02556227){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{6}\end{tabular}}}}%
+    \put(0.27838913,0.34348396){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{5}\end{tabular}}}}%
+    \put(0.15572634,0){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{4}\end{tabular}}}}%
+    \put(0.00052054,0.00052897){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{3}\end{tabular}}}}%
+    \put(0.16073306,0.22582146){\color[rgb]{0.6,0.6,0.6}\transparent{0.96100003}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf{2}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{bridges.pdf}}%
   \end{picture}%
 \endgroup%
