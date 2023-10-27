@@ -99,6 +99,12 @@ fontsize=\normalsize
 
 \newcommand{\g}{\ensuremath{G=\langle V,E\rangle}\xspace}
 
+\newcommand{\simplebox}[1]{
+   \begin{tikzpicture}
+     \node[text centered, rectangle, draw=black, thick, text width=\linewidth,align=center, rounded corners, minimum height=1em] (C) {#1};
+   \end{tikzpicture}
+ }
+
 \author{Gianluca Della Vedova}
 \title{Large-Scale Graph Algorithms}
 \institute{Univ. Milano--Bicocca\\
