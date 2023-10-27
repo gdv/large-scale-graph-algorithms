@@ -326,13 +326,64 @@
     E}f_{ij}-\sum_{k:(i,k)\in E}f_{ki}&=
                                         \begin{cases}
                                           F& \text{if } i=s\\
-                                          -F& \text{if} i=t\\
+                                          -F& \text{if } i=t\\
                                           0& i \text{ otherwise}
                                         \end{cases}
                                       && \forall i\in V\\
     0\le f_{ij}&\le c_{ij} &&\forall (i,j)\in E
   \end{align*}
 	\end{frame}
+
+\begin{frame}[fragile]{Example}
+
+	\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+	\tikzstyle{selected vertex} = [vertex, fill=black!80]
+	\tikzstyle{sourcesink} = [vertex, accepting, color=green, fill=blue!90]
+	\tikzstyle{edge} = [draw,thick,->, >=latex]
+	\tikzstyle{weight} = [font=\small]
+	\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+	\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+	\begin{figure}
+		\begin{tikzpicture}[scale=1.8, auto,swap]
+			% Draw a 7,11 network
+			% First we draw the vertices
+			\foreach \pos/\name in {{(0,2)/a}, {(2,2)/b}, {(5,2)/c},
+					{(0,0)/d}, {(2.5,0.5)/e}, {(2,-1)/f}, {(4,-1)/g}}
+			\node[vertex] (\name) at \pos {$\name$};
+			\foreach \pos/\name in {{(-2,1)/s}, {(6,0)/t}}
+			\node[sourcesink] (\name) at \pos {$\name$};
+			% Connect vertices with edges and draw weights
+			\foreach \source/\dest/\capacity/\position in {
+			  s/a/(5)/above, s/d/(8)/->,
+			  a/b/(3)/above, a/d/(3)/->,
+			  b/c/(8)/above, b/d/(9)/->,
+			  c/t/(7)/above right,  c/e/(5)/->,
+			  d/f/(10)/->, d/e/(4)/->,
+			  e/t/(7)/above, e/b/(7)/->,
+			  f/g/(4)/->, f/e/(8)/->,
+			  g/e/(9)/->,
+			  t/g/(6)/->
+			}
+			\draw[edge] (\source) edge node[\position]{\capacity} (\dest);
+			% Start animating the vertex and edge selection.
+			%    \foreach \vertex / \fr in {d/1,a/2,f/3,b/4,e/5,c/6,g/7}
+			%        \path<\fr-> node[selected vertex] at (\vertex) {$\vertex$};
+			% For convenience we use a background layer to highlight edges
+			% This way we don't have to worry about the highlighting covering
+			% weight labels.
+			%    \begin{pgfonlayer}{background}
+			%        \pause
+			%        \foreach \source / \dest in {d/a,d/f,a/b,b/e,e/c,e/g}
+			%            \path<+->[selected edge] (\source.center) -- (\dest.center);
+			%        \foreach \source / \dest / \fr in {d/b/4,d/e/5,e/f/5,b/c/6,f/g/7}
+			%            \path<\fr->[ignored edge] (\source.center) -- (\dest.center);
+			%    \end{pgfonlayer}
+		\end{tikzpicture}
+	\end{figure}
+
+\end{frame}
+
 
 
 \begin{frame}[fragile]
