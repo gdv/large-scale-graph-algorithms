@@ -1,3 +1,4 @@
+slides/
 data/*.gz
 data/*.zst
 *.vrb
