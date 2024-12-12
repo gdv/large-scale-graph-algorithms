@@ -1,0 +1,279 @@
+\include{header}
+
+\begin{document}
+
+% \begin{frame}[fragile]
+%     \frametitle{Graph Compression}
+% \begin{columns}
+%   \begin{column}{0.45\textwidth}
+%     \includegraphics<1>[height=0.55\textheight]{img/Petersen_graph_3-coloring}
+%   \end{column}
+%   \begin{column}{0.45\textwidth}
+%       \begin{block}{Notation}
+%         \begin{itemize}
+%           \item
+% \alert{number of vertices}: $n$
+%           \item
+% \alert{number of edges/arcs}: $m$
+%         \end{itemize}
+%       \end{block}
+%   \end{column}
+% \end{columns}
+% \end{frame}
+%
+
+\begin{frame}[fragile]
+\frametitle{Bipartite graphs}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\begin{figure}
+\begin{tikzpicture}[scale=1.5, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(0,1)/a}, {(2,1)/b}, {(0,2)/c},
+      {(2,2)/d}, {(2,3)/e}, {(2,4)/f}, {(0,3)/g},
+      {(2,5)/h}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {b/a, g/b, c/b,
+                                c/d, e/c,
+                                f/g,
+                                f/c, g/e, g/f, g/h}
+        \path[edge] (\source) --  (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Bipartite graphs}
+\begin{block}{Lemma 1}
+Let \(G=\langle V,E\rangle\) be a graph.
+Then \(G\) is bipartite if and only if it does not have any odd cycle.
+\end{block}
+
+\begin{block}{Lemma 2}
+Let \(G=\langle V,E\rangle\) be a graph and let \(M\) be its \textbf{incidence} matrix.
+Then \(G\) is bipartite if and only if \(M\) is totally unimodular.
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Max cardinality matching}
+
+\begin{block}{Instance}
+An unweighted graph \g with bipartition \(A,B\)
+\end{block}
+
+\begin{align}
+  \max \sum_{(v,w)\in E} e_{v,w}                  \quad&\text{subject to }\\
+  \sum_{w\in B} e_{v,w} \le 1 \quad& \forall v\in A           \\
+  \sum_{v\in A} e_{v,w} \le 1 \quad& \forall w\in B           \\
+  e_{v,w}\in \{0,1\}         \quad& \forall (v,w)\in E \notag
+\end{align}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Max cardinality matching}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{matching} = [draw,thick,green,-]
+\begin{figure}
+\begin{tikzpicture}[scale=1.5, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(0,1)/a}, {(2,1)/b}, {(0,3)/c},
+      {(2,2)/d}, {(2,3)/e}, {(2,4)/f}, {(0,5)/g},
+      {(2,5)/h}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest in {g/b, c/b, c/d, f/g, f/c, g/e, g/f}
+        \path[edge] (\source) --  (\dest);
+    \foreach \source/ \dest in {b/a, g/h, e/c}
+     \path[matching] (\source) --  (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Max cardinality matching as Max flow}
+
+\tikzstyle{vertex}=[circle,draw,minimum size=20pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick, ->, >=latex]
+\tikzstyle{matching} = [draw,thick,green,->, >=latex]
+\tikzstyle{selected vertex} = [vertex, fill=black!80]
+\tikzstyle{sourcesink} = [vertex, accepting, color=green, fill=blue!90]
+\tikzstyle{edge_style} = [draw,thick,->, >=latex]
+\tikzstyle{dummy} = [draw,dashed ,->, >=latex]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+\tikzstyle{marked} = [draw=red, line width=5,  opacity=.3]
+\tikzstyle{unmarked} = [draw=gray, line width=5, opacity=.3]
+\tikzstyle{potential} = [draw=green, line width=5, opacity=.3]
+\begin{figure}
+\begin{tikzpicture}[scale=1.5, auto,swap]
+
+
+% Source, terminal
+\node[sourcesink] (s) at (-2,3) {s};
+\node[sourcesink] (t) at (5,3) {t};
+
+
+% Left side
+\foreach \pos/\name in {{(0,1)/a}, {(0,3)/c},
+  {(0,5)/g}}
+\node[vertex] (\name) at \pos {$\name$};
+\foreach \pos/\name in {{(0,1)/a}, {(0,3)/c},
+  {(0,5)/g}}
+\draw[dummy] (s) edge node[above]{/1} (\name);
+
+% Right side
+\foreach \pos/\name in {{(2,1)/b},
+  {(2,2)/d}, {(2,3)/e}, {(2,4)/f},
+  {(2,5)/h}}
+\node[vertex] (\name) at \pos {$\name$};
+\foreach \pos/\name in {{(2,1)/b},
+  {(2,2)/d}, {(2,3)/e}, {(2,4)/f},
+  {(2,5)/h}}
+\draw[dummy] (\name) edge node[above]{/1} (t);
+
+% Connect vertices with edges and draw weights
+\foreach \source/\dest in {g/b, c/b, c/d, c/f, g/e, g/f}
+\draw[edge_style] (\source) edge node[above]{} (\dest);
+\foreach \source/ \dest in {b/a, g/h, e/c}
+\draw[matching] (\source) edge node[above]{} (\dest);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Min weighted perfect matching}
+
+\begin{block}{Instance}
+An edge-weighted graph \g with bipartition \(S,T\), with weight function \(c\)
+\end{block}
+
+\begin{align}
+  \min \sum_{(v,w)\in E} c(v,w)e_{v,w}                  \quad&\text{subject to }\notag\\
+  \sum_{w\in T} e_{v,w} \le 1 \quad& \forall v\in S           \notag\\
+  \sum_{v\in S} e_{v,w} \le 1 \quad& \forall w\in T           \notag\\
+  e_{v,w}\in \{0,1\}         \quad& \forall (v,w)\in E \notag
+\end{align}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Max weighted matching}
+
+\begin{block}{Instance}
+An edge-weighted graph \g with bipartition \(S,T\), with weight function \(c\)
+\end{block}
+
+\begin{columns}
+\begin{column}{0.45\textwidth}
+\begin{block}{Primal}
+\begin{align}
+  \min \sum_{(v,w)\in E} c(v,w)e_{v,w}                  \quad&\text{subject to }\notag\\
+  \sum_{w\in N(v)} e_{v,w} \le 1 \quad& \forall v\in V           \notag\\
+  e_{v,w}\ge 0         \quad& \forall (v,w)\in E \notag
+\end{align}
+\end{block}
+\end{column}
+\begin{column}{0.45\textwidth}
+\begin{block}{Dual}
+\begin{align}
+  \max \sum_{v\in V} l(v)   \quad&\text{subject to }\notag\\
+  l(v) + l(w) \le c_{v,w}  \quad&\forall (v,w)\in E \notag
+\end{align}
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Invariants}
+
+\begin{itemize}
+\item
+      Always a dual feasible solution $l(v) + l(w) \le c_{v,w}$
+\item
+      $R_{S}\subseteq S$, $R_{T}\subseteq T$ are the \textbf{uncovered} vertices
+\item
+      $G_{l}$: take only the edges $(v,w)\in E$ of $G$ such that
+      $l(v) + l(w) = c_{v,w}$.
+      \begin{itemize}
+      \item Arcs in $M$ are from $T$ to $S$.
+      \item  Arcs not in $M$ are from $S$ to $T$.
+      \item $G_{l}$ has all the edges of $M$.
+      \end{itemize}
+\item
+      $Z$: vertices reachable from $R_{S}$ in $G_{l}$
+\item $(v,w)\in M \Rightarrow l(v) + l(w) = c_{v,w}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Algorithm}
+
+\begin{algorithm}[H]
+  \KwData{Undirected bipartite weighted graph \g, bipartition $(S,T)$, cost $c$}
+  $M\gets \emptyset$, $l=\bar{0}$\;
+	\While{$M$ is not perfect}{
+    \eIf{$R_{T}\cap Z\neq\emptyset$}{
+      Found an alternating path\;
+      Extend $M$\;
+    }{
+      $\Delta = \min_{c\in S\cap Z, t\in T\setminus Z} \left\{ c(s,t) - c(s) -c(t)\right\}$\;
+      \ForEach{$v\in V$}{
+      \lIf{$v\in S\cap Z$}{$l(v) \gets l(v) + \Delta$}
+      \lIf{$v\in T\cap Z$}{$l(v) \gets l(v) - \Delta$}
+      }
+    }
+  }
+  \Return{$M$}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Algorithm correctness}
+\begin{block}{Lemma}
+Let $M, l$ be a current solution such that $M$ is not a perfect matching.
+Then there is an augmenting path in $G$, which implies:
+\begin{enumerate}
+      \item there is an augmenting path in $G_{l}$ or
+\item there is a loose-tailed path in $G$
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faster and incremental algorithm}
+
+We have an optimal solution on the vertices $S_{j-1} \cup T$ and we add the
+vertex $j$.
+
+\begin{algorithm}[H]
+  \KwData{$M$ current solution on $S_{j-1} \cup T$, vertex $j$ to add}
+  $Z\gets\{j\}$\;
+  $\Delta = \min_{t\in T\setminus Z} \left\{ c(j,t) - c(j) -c(t)\right\}$\;
+  $x$ is the argmin\;
+  \ForEach{$v\in V$}{
+    \lIf{$v\in S\cap Z$}{$l(v) \gets l(v) + \Delta$}
+    \lIf{$v\in T\cap Z$}{$l(v) \gets l(v) - \Delta$}
+  }
+  \eIf{$x$ is covered by $M$}{
+    Add $x$ and its mate to $Z$, then iterate\;
+  }{
+    Found an augmenting path\;
+  }
+  \Return{$M$}
+\end{algorithm}
+\end{frame}
+
+
+\include{license}\end{document}
