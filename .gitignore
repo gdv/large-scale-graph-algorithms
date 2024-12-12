@@ -14,3 +14,7 @@ src/target
 .ipynb_checkpoints
 .auctex-auto/
 .snakemake/
+
+# pixi environments
+.pixi
+*.egg-info
