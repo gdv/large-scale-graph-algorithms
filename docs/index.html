@@ -52,6 +52,7 @@
         for (let file of data.filter(filterFiles(filter)).sort()) {
           const fileName = file.path.replace('.md', '');
           const fileDisplayName = fileName.replace('slides/, '');
+          const urlName = fileName.replace('https://gdv.github.io/large-scale-graph-algorithms/', 'https://raw.githubusercontent.com/gdv/large-scale-graph-algorithms/main/');
           htmlString += `<li><a href="${fileName}">${fileDisplayName}</a></li>`;
         }
         document.getElementById('list').innerHTML = htmlString;
