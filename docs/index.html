@@ -24,12 +24,34 @@
           return isPdf;
         }
       }
+      // Match by closest to start of word then earliest word
+      const matchScore = (file, filter) => {
+        const fileWords = file.name.replace('.md', '').toLowerCase().split('-');
+        filter = filter.toLowerCase()
+        let wordIndex;
+        let letterPosition;
+        for (wordIndex = 0; wordIndex < fileWords.length; wordIndex++) {
+          letterPosition = fileWords[wordIndex].indexOf(filter)
+          if (letterPosition > -1) break;
+        }
+        if (letterPosition < 0) {
+          letterPosition = 100;
+        }
+        return wordIndex + letterPosition * 100;
+      }
+      // Sort files by best match
+      const sortFiles = (filter) => {
+        filter = filter.toLowerCase()
+        return (fileA, fileB) => {
+          return matchScore(fileA, filter) < matchScore(fileB, filter) ? -1 : 1;
+        }
+      }
       // Render search result list
       const updateList = (data, filter = '') => {
         let htmlString = '';
-        for (let file of data.filter(filterFiles(filter)).sort()) {
+        for (let file of data.filter(filterFiles(filter)).sort(sortFiles(filter))) {
           const fileName = file.path.replace('.md', '');
-          const fileDisplayName = fileName.replace('slides/', '');
+          const fileDisplayName = fileName.split('-').join(' ');
           htmlString += `<li><a href="${fileName}">${fileDisplayName}</a></li>`;
         }
         document.getElementById('list').innerHTML = htmlString;
@@ -65,6 +87,10 @@
           search_input.focus()
         })
       })()
+      // Register service worker
+      if (navigator.serviceWorker && !navigator.serviceWorker.controller) {
+        navigator.serviceWorker.register('./serviceworker.js');
+      }
     </script>
   <body>
 </html>
