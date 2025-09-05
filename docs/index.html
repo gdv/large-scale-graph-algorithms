@@ -4,6 +4,16 @@
     <title>Slides</title>
   </head>
   <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <h1>
+        <a href="./">recipes</a>
+        <form id="search_form" autocomplete="off">
+          <input id="search_input">
+        </form>
+      </h1>
+      <ul id="list">
+      </ul>
+    </div>
     <script>
       // Filter files by search term match and clean out non recipe files
       const filterFiles = (filter) => {
