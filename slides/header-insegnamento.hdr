@@ -1,0 +1,9 @@
+% In questo file si mettono i comandi utili solo per questo insegnamento.
+%
+\newcommand{\g}{\ensuremath{G=\langle V,E\rangle}\xspace}
+
+\author{Gianluca Della Vedova}
+\title{Large-Scale Graph Algorithms}
+\institute{Univ. Milano--Bicocca\\
+	\texttt{https://gianluca.dellavedova.org}}
+\date{\today}
