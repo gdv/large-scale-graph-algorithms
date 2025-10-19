@@ -9,7 +9,7 @@ jobs:
       - name: GitHub Action for LaTeX
         uses: xu-cheng/latex-action@4.0.0
         with:
-          root_file: *.tex
+          root_file: "*.tex"
           working_directory: slides
           continue_on_error: true
           latexmk_use_lualatex: true      
@@ -17,5 +17,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PDF
-          path: *.pdf
+          path: "*.pdf"
 
