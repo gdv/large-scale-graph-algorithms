@@ -15,5 +15,6 @@ jobs:
           latexmk_use_lualatex: true      
       - name: Release PDF file
         uses: softprops/action-gh-release@v2
-        files: "slides/*.pdf"
+        with:
+          files: "slides/*.pdf"
 
