@@ -2,7 +2,7 @@ name: Build LaTeX document
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "v*"
 
 jobs:
   build_latex:
