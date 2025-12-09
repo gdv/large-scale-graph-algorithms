@@ -178,7 +178,7 @@ An edge-weighted graph \g with bipartition \(S,T\), with weight function \(c\)
 \begin{column}{0.45\textwidth}
 \begin{block}{Primal}
 \begin{align}
-  \min \sum_{(v,w)\in E} c(v,w)e_{v,w}                  \quad&\text{subject to }\notag\\
+  \min \sum_{(v,w)\in E} c_{v,w}e_{v,w}                  \quad&\text{subject to }\notag\\
   \sum_{w\in N(v)} e_{v,w} = 1 \quad& \forall v\in V           \notag\\
   e_{v,w}\ge 0         \quad& \forall (v,w)\in E \notag
 \end{align}
@@ -228,7 +228,7 @@ An edge-weighted graph \g with bipartition \(S,T\), with weight function \(c\)
       Found an alternating path\;
       Extend $M$\;
     }{
-      $\Delta = \min_{c\in S\cap Z, t\in T\setminus Z} \left\{ c(s,t) - c(s) -c(t)\right\}$\;
+      $\Delta = \min_{s\in S\cap Z, t\in T\setminus Z} \left\{ c(s,t) - l(s) - l(t)\right\}$\;
       \ForEach{$v\in V$}{
       \lIf{$v\in S\cap Z$}{$l(v) \gets l(v) + \Delta$}
       \lIf{$v\in T\cap Z$}{$l(v) \gets l(v) - \Delta$}
@@ -260,7 +260,7 @@ vertex $j$.
 \begin{algorithm}[H]
   \KwData{$M$ current solution on $S_{j-1} \cup T$, vertex $j$ to add}
   $Z\gets\{j\}$\;
-  $\Delta = \min_{t\in T\setminus Z} \left\{ c(j,t) - c(j) -c(t)\right\}$\;
+  $\Delta = \min_{t\in T\setminus Z} \left\{ c(j,t) - l(j) - l(t)\right\}$\;
   $x$ is the argmin\;
   \ForEach{$v\in V$}{
     \lIf{$v\in S\cap Z$}{$l(v) \gets l(v) + \Delta$}
