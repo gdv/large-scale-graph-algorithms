@@ -159,8 +159,8 @@ An edge-weighted graph \g with bipartition \(S,T\), with weight function \(c\)
 
 \begin{align}
   \min \sum_{(v,w)\in E} c(v,w)e_{v,w}                  \quad&\text{subject to }\notag\\
-  \sum_{w\in T} e_{v,w} \le 1 \quad& \forall v\in S           \notag\\
-  \sum_{v\in S} e_{v,w} \le 1 \quad& \forall w\in T           \notag\\
+  \sum_{w\in T} e_{v,w} = 1 \quad& \forall v\in S           \notag\\
+  \sum_{v\in S} e_{v,w} = 1 \quad& \forall w\in T           \notag\\
   e_{v,w}\in \{0,1\}         \quad& \forall (v,w)\in E \notag
 \end{align}
 \end{frame}
@@ -179,7 +179,7 @@ An edge-weighted graph \g with bipartition \(S,T\), with weight function \(c\)
 \begin{block}{Primal}
 \begin{align}
   \min \sum_{(v,w)\in E} c(v,w)e_{v,w}                  \quad&\text{subject to }\notag\\
-  \sum_{w\in N(v)} e_{v,w} \le 1 \quad& \forall v\in V           \notag\\
+  \sum_{w\in N(v)} e_{v,w} = 1 \quad& \forall v\in V           \notag\\
   e_{v,w}\ge 0         \quad& \forall (v,w)\in E \notag
 \end{align}
 \end{block}
