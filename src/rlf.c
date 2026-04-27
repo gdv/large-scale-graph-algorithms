@@ -29,9 +29,6 @@ igraph_integer_t rlf_run(const igraph_t *g, igraph_integer_t *color)
         if (best_v < 0) break;
 
         for (igraph_integer_t i = 0; i < n; i++) adj_to_I[i] = false;
-        bool *in_I = calloc((size_t)n, sizeof(bool));
-        if (!in_I) { fprintf(stderr, "calloc failed\n"); exit(1); }
-        in_I[best_v] = true;
         colored[best_v] = true;
         color[best_v] = current_color;
 
@@ -64,7 +61,6 @@ igraph_integer_t rlf_run(const igraph_t *g, igraph_integer_t *color)
                 }
             }
             if (best_cand < 0) break;
-            in_I[best_cand] = true;
             colored[best_cand] = true;
             color[best_cand] = current_color;
             if (igraph_neighbors(g, &neighbors, best_cand, IGRAPH_ALL, IGRAPH_NO_LOOPS, false) != IGRAPH_SUCCESS) {
@@ -73,7 +69,6 @@ igraph_integer_t rlf_run(const igraph_t *g, igraph_integer_t *color)
             deg = igraph_vector_int_size(&neighbors);
             for (igraph_integer_t i = 0; i < deg; i++) adj_to_I[VECTOR(neighbors)[i]] = true;
         }
-        free(in_I);
         current_color++;
     }
 

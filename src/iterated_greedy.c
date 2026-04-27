@@ -25,6 +25,7 @@ static int cmp_class_size_desc(const void *a, const void *b)
 igraph_integer_t iterated_greedy_run(const igraph_t *g, igraph_integer_t *color,
                                       const char *ordering, igraph_integer_t iterations)
 {
+    if (!ordering) ordering = "largest";
     igraph_integer_t n = igraph_vcount(g);
     igraph_integer_t *best = malloc((size_t)n * sizeof(igraph_integer_t));
     igraph_integer_t *work = malloc((size_t)n * sizeof(igraph_integer_t));

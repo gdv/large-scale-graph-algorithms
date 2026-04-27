@@ -7,9 +7,6 @@ igraph_integer_t dsatur_run(const igraph_t *g, igraph_integer_t *color)
     igraph_integer_t n = igraph_vcount(g);
     for (igraph_integer_t v = 0; v < n; v++) color[v] = -1;
 
-    igraph_vector_int_t saturation;
-    igraph_vector_int_init(&saturation, n);
-
     bool *colored_flag = calloc((size_t)n, sizeof(bool));
     if (!colored_flag) { fprintf(stderr, "calloc failed\n"); exit(1); }
 
@@ -42,7 +39,6 @@ igraph_integer_t dsatur_run(const igraph_t *g, igraph_integer_t *color)
                     }
                 }
                 free(seen_colors);
-                VECTOR(saturation)[v] = sat;
 
                 if (sat > best_sat || (sat == best_sat && deg > best_deg)) {
                     best_sat = sat;
@@ -73,7 +69,6 @@ igraph_integer_t dsatur_run(const igraph_t *g, igraph_integer_t *color)
     }
 
     igraph_vector_int_destroy(&neighbors);
-    igraph_vector_int_destroy(&saturation);
     free(colored_flag);
     return max_color + 1;
 }
