@@ -1,8 +1,8 @@
 [package]
-name = "_"
+name = "coloring"
 version = "0.1.0"
 edition = "c23"
-description = "A new C project"
+description = "Graph coloring algorithms for the LSGA course"
 license = "MIT"
 
 [dependencies]
