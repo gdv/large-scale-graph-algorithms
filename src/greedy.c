@@ -11,10 +11,14 @@ igraph_integer_t greedy_run(const igraph_t *g, igraph_integer_t *color)
     igraph_integer_t max_color = 0;
 
     for (igraph_integer_t v = 0; v < n; v++) {
-        igraph_neighbors(g, &neighbors, v, IGRAPH_ALL, IGRAPH_NO_LOOPS, false);
+        if (igraph_neighbors(g, &neighbors, v, IGRAPH_ALL, IGRAPH_NO_LOOPS, false) != IGRAPH_SUCCESS) {
+            fprintf(stderr, "igraph_neighbors failed\n");
+            exit(1);
+        }
         igraph_integer_t deg = igraph_vector_int_size(&neighbors);
         igraph_integer_t limit = deg + 1;
         bool *used = calloc((size_t)limit, sizeof(bool));
+        if (!used) { fprintf(stderr, "malloc failed\n"); exit(1); }
 
         for (igraph_integer_t i = 0; i < deg; i++) {
             igraph_integer_t w = VECTOR(neighbors)[i];
