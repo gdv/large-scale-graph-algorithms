@@ -25,6 +25,7 @@ igraph_integer_t tabucol_run(const igraph_t *g, igraph_integer_t *color,
     igraph_vector_int_init(&neigh, 0);
 
     igraph_integer_t best_conflicts = n * n;
+    igraph_integer_t current_conflicts = n * n;
 
     for (igraph_integer_t iter = 0; iter < iterations; iter++) {
         igraph_integer_t best_delta = n * n;
@@ -48,7 +49,6 @@ igraph_integer_t tabucol_run(const igraph_t *g, igraph_integer_t *color,
             igraph_integer_t old_c = color[v];
             for (igraph_integer_t c = 0; c < num_colors; c++) {
                 if (c == old_c) continue;
-                if (tabu[v * num_colors + c] > iter) continue;
 
                 igraph_integer_t new_same = 0;
                 for (igraph_integer_t i = 0; i < deg; i++) {
@@ -57,10 +57,13 @@ igraph_integer_t tabucol_run(const igraph_t *g, igraph_integer_t *color,
                 }
 
                 igraph_integer_t delta = new_same - same_color;
-                if (delta < best_delta) {
-                    best_delta = delta;
-                    best_v = v;
-                    best_c = c;
+                igraph_integer_t candidate_conflicts = current_conflicts + delta;
+                if (candidate_conflicts < best_conflicts || tabu[v * num_colors + c] <= iter) {
+                    if (delta < best_delta) {
+                        best_delta = delta;
+                        best_v = v;
+                        best_c = c;
+                    }
                 }
             }
         }
@@ -87,6 +90,7 @@ igraph_integer_t tabucol_run(const igraph_t *g, igraph_integer_t *color,
             best_conflicts = total_conflicts;
             memcpy(best, color, (size_t)n * sizeof(igraph_integer_t));
         }
+        current_conflicts = total_conflicts;
 
         if (best_conflicts == 0) break;
     }

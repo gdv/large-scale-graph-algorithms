@@ -97,7 +97,7 @@ igraph_integer_t sa2_run(const igraph_t *g, igraph_integer_t *color,
     if (!best) { fprintf(stderr, "malloc failed\n"); exit(1); }
     memcpy(best, color, (size_t)n * sizeof(igraph_integer_t));
 
-    igraph_integer_t current_uncolored = 0;
+    igraph_integer_t current_uncolored = count_uncolored(color, n);
     igraph_integer_t best_uncolored = current_uncolored;
     double T = t0;
 
@@ -106,22 +106,23 @@ igraph_integer_t sa2_run(const igraph_t *g, igraph_integer_t *color,
 
     for (igraph_integer_t iter = 0; iter < iterations && best_uncolored > 0; iter++) {
         igraph_integer_t v = rand() % n;
-        if (color[v] < 0) {
-            color[v] = rand() % num_colors;
-        } else {
-            igraph_integer_t old_c = color[v];
-            igraph_integer_t new_c;
-            do { new_c = rand() % num_colors; } while (new_c == old_c);
-            color[v] = new_c;
+        if (color[v] >= 0) {
+            T *= alpha;
+            continue;
+        }
 
-            if (igraph_neighbors(g, &neigh, v, IGRAPH_ALL, IGRAPH_NO_LOOPS, false) != IGRAPH_SUCCESS) {
-                fprintf(stderr, "igraph_neighbors failed\n"); exit(1);
-            }
-            igraph_integer_t deg = igraph_vector_int_size(&neigh);
-            for (igraph_integer_t i = 0; i < deg; i++) {
-                igraph_integer_t w = VECTOR(neigh)[i];
-                if (color[w] == new_c) color[w] = -1;
-            }
+        igraph_integer_t *backup = malloc((size_t)n * sizeof(igraph_integer_t));
+        memcpy(backup, color, (size_t)n * sizeof(igraph_integer_t));
+
+        color[v] = rand() % num_colors;
+
+        if (igraph_neighbors(g, &neigh, v, IGRAPH_ALL, IGRAPH_NO_LOOPS, false) != IGRAPH_SUCCESS) {
+            fprintf(stderr, "igraph_neighbors failed\n"); exit(1);
+        }
+        igraph_integer_t deg = igraph_vector_int_size(&neigh);
+        for (igraph_integer_t i = 0; i < deg; i++) {
+            igraph_integer_t w = VECTOR(neigh)[i];
+            if (color[w] == color[v]) color[w] = -1;
         }
 
         igraph_integer_t new_uncolored = count_uncolored(color, n);
@@ -133,6 +134,10 @@ igraph_integer_t sa2_run(const igraph_t *g, igraph_integer_t *color,
                 best_uncolored = current_uncolored;
                 memcpy(best, color, (size_t)n * sizeof(igraph_integer_t));
             }
+            free(backup);
+        } else {
+            memcpy(color, backup, (size_t)n * sizeof(igraph_integer_t));
+            free(backup);
         }
         T *= alpha;
     }
