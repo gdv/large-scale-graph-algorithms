@@ -6,7 +6,7 @@ def write_dimacs(filename, name, n, edges):
         f.write(f"c {name}\n")
         f.write(f"p edge {n} {len(edges)}\n")
         for u, v in edges:
-            f.write(f"e {u} {v}\n")
+            f.write(f"e {u+1} {v+1}\n")
 
 # queen5_5: 5x5 queen graph, chi=5
 # vertices 0..24 row-major
