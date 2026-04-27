@@ -1,0 +1,9 @@
+[package]
+name = "_"
+version = "0.1.0"
+edition = "c23"
+description = "A new C project"
+license = "MIT"
+
+[dependencies]
+igraph = "*"
