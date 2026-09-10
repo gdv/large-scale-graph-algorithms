@@ -39,7 +39,7 @@ static igraph_t make_cap_graph(const igraph_real_t *edges, igraph_integer_t m,
     return g;
 }
 
-/* Classic example; maxflow(0,3) = 4.
+/* Classic example; maxflow(0,3) = 5.
  *   0 -> 1 (3), 0 -> 2 (2), 1 -> 2 (1), 1 -> 3 (2), 2 -> 3 (3) */
 static const igraph_real_t ex1[] = {0,1,3, 0,2,2, 1,2,1, 1,3,2, 2,3,3};
 static const igraph_integer_t ex1_n = 4, ex1_m = 5;
@@ -71,14 +71,14 @@ static igraph_real_t flow_value_via(flow_algo_t run, const igraph_real_t *edges,
 
 static void test_values(void)
 {
-    check("ff ex1 == 4",
-          flow_value_via(flow_ford_fulkerson, ex1, ex1_m, ex1_n, 0, 3) == 4.0);
-    check("ek ex1 == 4",
-          flow_value_via(flow_edmonds_karp, ex1, ex1_m, ex1_n, 0, 3) == 4.0);
-    check("dinic ex1 == 4",
-          flow_value_via(flow_dinic, ex1, ex1_m, ex1_n, 0, 3) == 4.0);
-    check("push ex1 == 4",
-          flow_value_via(flow_preflow_push, ex1, ex1_m, ex1_n, 0, 3) == 4.0);
+    check("ff ex1 == 5",
+          flow_value_via(flow_ford_fulkerson, ex1, ex1_m, ex1_n, 0, 3) == 5.0);
+    check("ek ex1 == 5",
+          flow_value_via(flow_edmonds_karp, ex1, ex1_m, ex1_n, 0, 3) == 5.0);
+    check("dinic ex1 == 5",
+          flow_value_via(flow_dinic, ex1, ex1_m, ex1_n, 0, 3) == 5.0);
+    check("push ex1 == 5",
+          flow_value_via(flow_preflow_push, ex1, ex1_m, ex1_n, 0, 3) == 5.0);
 
     check("ff ex2 == 2",
           flow_value_via(flow_ford_fulkerson, ex2, ex2_m, ex2_n, 0, 3) == 2.0);
@@ -111,7 +111,7 @@ static void test_vs_igraph(void)
     igraph_vector_destroy(&caps);
     igraph_destroy(&g);
 
-    check("oracle ex1 == 4", oracle == 4.0);
+    check("oracle ex1 == 5", oracle == 5.0);
     check("ff ex1 == oracle",
           flow_value_via(flow_ford_fulkerson, ex1, ex1_m, ex1_n, 0, 3) == oracle);
     check("ek ex1 == oracle",
@@ -146,13 +146,14 @@ static void test_mincut(void)
     check("mincut: s side non-empty", side[0]);
     check("mincut: t not in s side", !side[3]);
     check("mincut: cut capacity == maxflow", cut_cap == val);
-    check("maxflow value reported as 4", val == 4.0);
+    check("maxflow value reported as 5", val == 5.0);
     free(side);
     flow_destroy(&f);
 }
 
 int main(void)
 {
+    igraph_set_attribute_table(&igraph_cattribute_table);
     printf("test_flow\n");
     test_values();
     test_vs_igraph();
