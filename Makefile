@@ -4,6 +4,8 @@ TARGET_DIJKSTRA_IGRAPH := bin/dijkstra-igraph
 TARGET_DIJKSTRA := bin/dijkstra
 TST_DIJKSTRA   := bin/test_dijkstra
 TST_CSR        := bin/test_csr
+TST_SEARCH      := bin/test_search
+TST_CONNECTIVITY := bin/test_connectivity
 BUILD_DIR      := ./build
 SRC_DIRS       := ./src
 TST_DIRS       := ./tests
@@ -35,7 +37,13 @@ TST_DIJKSTRA_OBJS := $(BUILD_DIR)/test_dijkstra.o $(BUILD_DIR)/dijkstra.o \
 
 TST_CSR_OBJS := $(BUILD_DIR)/test_csr.o $(BUILD_DIR)/util.o $(BUILD_DIR)/csr.o
 
-ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS))
+TST_SEARCH_OBJS := $(BUILD_DIR)/test_search.o $(BUILD_DIR)/util.o \
+	$(BUILD_DIR)/csr.o $(BUILD_DIR)/search.o
+
+TST_CONNECTIVITY_OBJS := $(BUILD_DIR)/test_connectivity.o $(BUILD_DIR)/util.o \
+	$(BUILD_DIR)/csr.o $(BUILD_DIR)/connectivity.o
+
+ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS) $(TST_SEARCH_OBJS) $(TST_CONNECTIVITY_OBJS))
 DEPS := $(ALL_OBJS:.o=.d)
 
 vpath %.c $(SRC_DIRS) $(TST_DIRS)
@@ -72,11 +80,21 @@ $(TST_CSR): $(TST_CSR_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
+$(TST_SEARCH): $(TST_SEARCH_OBJS)
+	mkdir -p $(dir $@)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+$(TST_CONNECTIVITY): $(TST_CONNECTIVITY_OBJS)
+	mkdir -p $(dir $@)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
 .PHONY: test tests
-test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR)
+test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY)
 	./$(TST_EXEC)
 	./$(TST_DIJKSTRA)
 	./$(TST_CSR)
+	./$(TST_SEARCH)
+	./$(TST_CONNECTIVITY)
 
 $(BUILD_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
@@ -84,7 +102,7 @@ $(BUILD_DIR)/%.o: %.c
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR)
+	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY)
 
 -include $(DEPS)
 # Dep: igraph (system, located via pkg-config)
