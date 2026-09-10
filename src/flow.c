@@ -236,9 +236,8 @@ igraph_real_t flow_preflow_push(flow_t *f, igraph_integer_t s, igraph_integer_t 
     while (qh < qt) {
         igraph_integer_t x = q[qh++];
         for (igraph_integer_t ra = rev_head[x]; ra != -1; ra = rev_next[ra]) {
-            igraph_integer_t a = ra ^ 1;        /* forward arc: origin -> x */
-            igraph_integer_t u = f->to[a];      /* origin of that arc */
-            if (f->cap[a] > 0.0 && h[u] == -1) {
+            igraph_integer_t u = f->to[ra ^ 1]; /* origin of arc ra: u -> x */
+            if (f->cap[ra] > 0.0 && h[u] == -1) {
                 h[u] = h[x] + 1;
                 q[qt++] = u;
             }

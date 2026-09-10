@@ -151,6 +151,42 @@ static void test_mincut(void)
     flow_destroy(&f);
 }
 
+static void test_flow_array_and_oracle_ex2(void)
+{
+    /* flow[] per edge: 0 <= flow[k] <= cap[k] and value == net flow out of s */
+    flow_t f;
+    flow_init(&f, ex1_n, ex1_m);
+    for (igraph_integer_t i = 0; i < ex1_m; i++)
+        flow_add_edge(&f, (igraph_integer_t)ex1[3 * i],
+                      (igraph_integer_t)ex1[3 * i + 1], ex1[3 * i + 2]);
+    igraph_real_t fl[5];
+    igraph_real_t val = flow_dinic(&f, 0, 3, fl);
+    flow_destroy(&f);
+
+    igraph_integer_t net_s = 0;
+    int in_range = 1;
+    for (igraph_integer_t k = 0; k < ex1_m; k++) {
+        if (!(0.0 <= fl[k] && fl[k] <= ex1[3 * k + 2])) in_range = 0;
+        if (ex1[3 * k] == 0) net_s += (igraph_integer_t)fl[k];
+        if (ex1[3 * k + 1] == 0) net_s -= (igraph_integer_t)fl[k];
+    }
+    check("flow[k] within capacities", in_range);
+    check("flow[] net out of s == value", (igraph_real_t)net_s == val);
+
+    /* igraph oracle for ex2 as well */
+    igraph_t g = make_cap_graph(ex2, ex2_m, ex2_n);
+    igraph_vector_t caps;
+    igraph_vector_init(&caps, 0);
+    igraph_cattribute_EANV(&g, "capacity", igraph_ess_all(IGRAPH_EDGEORDER_ID), &caps);
+    igraph_real_t oracle = -1.0;
+    igraph_maxflow_value(&g, &oracle, 0, 3, &caps, NULL);
+    igraph_vector_destroy(&caps);
+    igraph_destroy(&g);
+    check("ex2 oracle == 2", oracle == 2.0);
+    check("ff ex2 == oracle",
+          flow_value_via(flow_ford_fulkerson, ex2, ex2_m, ex2_n, 0, 3) == oracle);
+}
+
 int main(void)
 {
     igraph_set_attribute_table(&igraph_cattribute_table);
@@ -158,6 +194,7 @@ int main(void)
     test_values();
     test_vs_igraph();
     test_mincut();
+    test_flow_array_and_oracle_ex2();
     printf("%d passed, %d failed\n", passed, failed);
     return failed == 0 ? 0 : 1;
 }

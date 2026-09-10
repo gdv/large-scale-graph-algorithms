@@ -49,6 +49,14 @@ int main(int argc, char **argv)
     igraph_vector_int_destroy(&elist);
     igraph_destroy(&g);
 
+    if (source < 0 || source >= n || target < 0 || target >= n || source == target) {
+        fprintf(stderr,
+                "invalid s-t pair (%" IGRAPH_PRId ", %" IGRAPH_PRId ") for n=%" IGRAPH_PRId "\n",
+                source, target, n);
+        flow_destroy(&f);
+        return 1;
+    }
+
     igraph_real_t (*run)(flow_t *, igraph_integer_t, igraph_integer_t, igraph_real_t *) = NULL;
     if (!strcmp(algo, "ff"))                   run = flow_ford_fulkerson;
     else if (!strcmp(algo, "ek"))              run = flow_edmonds_karp;
