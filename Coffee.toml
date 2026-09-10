@@ -1,9 +1,80 @@
 [package]
-name = "coloring"
+name = "large-scale-graph-algorithms"
 version = "0.1.0"
 edition = "c23"
-description = "Graph coloring algorithms for the LSGA course"
+description = "Graph algorithms for the LSGA course"
 license = "MIT"
 
 [dependencies]
-igraph = "*"
+igraph = { git = "https://github.com/igraph/igraph" }
+libxml2 = { git = "https://gitlab.gnome.org/GNOME/libxml2" }
+
+[[bin]]
+name = "coloring"
+src = [
+  "src/coloring.c",
+  "src/greedy.c",
+  "src/welsh_powell.c",
+  "src/dsatur.c",
+  "src/rlf.c",
+  "src/iterated_greedy.c",
+  "src/sa.c",
+  "src/tabucol.c",
+  "src/antcolony.c",
+  "src/output.c",
+]
+
+[[bin]]
+name = "dijkstra-igraph"
+src = [
+  "src/dijkstra_main.c",
+  "src/dijkstra.c",
+]
+
+[[bin]]
+name = "dijkstra"
+src = [
+  "src/dijkstra_main2.c",
+  "src/graph_io.c",
+  "src/adjacency.c",
+  "src/adj_array.c",
+  "src/adj_sorted.c",
+  "src/adj_linked.c",
+  "src/adj_hash.c",
+  "src/priority_queue.c",
+  "src/pq_binary.c",
+  "src/pq_unsorted.c",
+  "src/pq_dary.c",
+  "src/dijkstra_core.c",
+]
+
+
+[test]
+sources = [
+  "tests/test_coloring.c",
+  "tests/test_dijkstra.c",
+  "tests/test_csr.c",
+  "src/util.c",
+  "src/csr.c",
+  "src/greedy.c",
+  "src/welsh_powell.c",
+  "src/dsatur.c",
+  "src/rlf.c",
+  "src/iterated_greedy.c",
+  "src/sa.c",
+  "src/tabucol.c",
+  "src/antcolony.c",
+  "src/output.c",
+  "src/dijkstra.c",
+  "src/graph_io.c",
+  "src/adjacency.c",
+  "src/adj_array.c",
+  "src/adj_sorted.c",
+  "src/adj_linked.c",
+  "src/adj_hash.c",
+  "src/priority_queue.c",
+  "src/pq_binary.c",
+  "src/pq_unsorted.c",
+  "src/pq_dary.c",
+  "src/dijkstra_core.c",
+]

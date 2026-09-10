@@ -3,6 +3,7 @@ TST_EXEC       := bin/test_coloring
 TARGET_DIJKSTRA_IGRAPH := bin/dijkstra-igraph
 TARGET_DIJKSTRA := bin/dijkstra
 TST_DIJKSTRA   := bin/test_dijkstra
+TST_CSR        := bin/test_csr
 BUILD_DIR      := ./build
 SRC_DIRS       := ./src
 TST_DIRS       := ./tests
@@ -65,10 +66,17 @@ $(TST_DIJKSTRA): $(TST_DIJKSTRA_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
+TST_CSR_OBJS := $(BUILD_DIR)/test_csr.o $(BUILD_DIR)/util.o $(BUILD_DIR)/csr.o
+
+$(TST_CSR): $(TST_CSR_OBJS)
+	mkdir -p $(dir $@)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
 .PHONY: test tests
-test tests: $(TST_EXEC) $(TST_DIJKSTRA)
+test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR)
 	./$(TST_EXEC)
 	./$(TST_DIJKSTRA)
+	./$(TST_CSR)
 
 $(BUILD_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
@@ -76,7 +84,7 @@ $(BUILD_DIR)/%.o: %.c
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA)
+	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR)
 
 -include $(DEPS)
 # Dep: igraph (system, located via pkg-config)
