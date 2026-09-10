@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "csr.h"
 #include "util.h"
@@ -108,12 +107,45 @@ static void test_csr_undirected(void)
     csr_destroy(&c);
 }
 
+static void test_csr_loops_and_parallel(void)
+{
+    /* self-loop 1-1, parallel edges 0-2 twice */
+    igraph_integer_t edges[] = {1, 1, 0, 2, 0, 2};
+    igraph_t g = make_graph(edges, 3, 3, IGRAPH_UNDIRECTED);
+    csr_t c;
+    csr_build(&c, &g, false);
+
+    check("loops: 6 arcs", c.m == 6);
+    check("loops: deg(1)=2 (self-loop counts twice)",
+          csr_degree(&c, 1) == 2 && c.targets[c.offsets[1]] == 1 &&
+          c.targets[c.offsets[1] + 1] == 1);
+    check("loops: deg(0)=2, deg(2)=2 (parallel edges)",
+          csr_degree(&c, 0) == 2 && csr_degree(&c, 2) == 2);
+
+    int involution = 1;
+    for (igraph_integer_t a = 0; a < c.m; a++)
+        if (c.rev[c.rev[a]] != a) involution = 0;
+    check("loops: rev is an involution", involution);
+
+    int reciprocal = 1;
+    for (igraph_integer_t u = 0; u < c.n; u++)
+        for (igraph_integer_t i = c.offsets[u]; i < c.offsets[u + 1]; i++) {
+            igraph_integer_t b = c.rev[i];
+            if (c.targets[b] != u) reciprocal = 0;
+        }
+    check("loops: sibling arcs are reciprocal", reciprocal);
+
+    igraph_destroy(&g);
+    csr_destroy(&c);
+}
+
 int main(void)
 {
     printf("test_csr\n");
     test_rng();
     test_csr_directed();
     test_csr_undirected();
+    test_csr_loops_and_parallel();
     printf("%d passed, %d failed\n", passed, failed);
     return failed == 0 ? 0 : 1;
 }

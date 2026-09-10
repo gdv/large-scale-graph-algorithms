@@ -12,7 +12,9 @@
  *   targets[0..m)   arc endpoints
  *   rev[0..m)       for undirected graphs, rev[a] is the id of the sibling
  *                   arc of arc a (both directions of the same edge);
- *                   NULL for directed graphs.
+ *                   NULL for directed graphs.  A self-loop's two arcs
+ *                   live inside the same vertex block, so the sibling arc
+ *                   need not be in the "neighbor's" block.
  *
  * Memory is exactly (n+1) + m + (m if undirected) integers: cheap, dense,
  * cache-friendly, and easy to draw on a whiteboard.
@@ -31,6 +33,7 @@ void csr_build(csr_t *g, const igraph_t *graph, bool directed);
 
 void csr_destroy(csr_t *g);
 
+/* Out-degree of u (u must be in [0, n)). */
 static inline igraph_integer_t csr_degree(const csr_t *g, igraph_integer_t u)
 {
     return g->offsets[u + 1] - g->offsets[u];

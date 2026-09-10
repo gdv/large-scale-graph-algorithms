@@ -31,7 +31,7 @@ void csr_build(csr_t *g, const igraph_t *graph, bool directed)
     }
     g->offsets[n] = acc;
 
-    igraph_integer_t *pos = xmalloc((size_t)n * sizeof(igraph_integer_t));
+    igraph_integer_t *pos = xmalloc((size_t)n * sizeof(igraph_integer_t));   /* running write cursor per vertex */
     for (igraph_integer_t u = 0; u < n; u++) pos[u] = g->offsets[u];
 
     for (igraph_integer_t i = 0; i < m; i++) {
@@ -59,4 +59,6 @@ void csr_destroy(csr_t *g)
     g->offsets = NULL;
     g->targets = NULL;
     g->rev     = NULL;
+    g->n = 0;
+    g->m = 0;
 }

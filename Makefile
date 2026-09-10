@@ -33,6 +33,8 @@ TST_DIJKSTRA_OBJS := $(BUILD_DIR)/test_dijkstra.o $(BUILD_DIR)/dijkstra.o \
 	$(BUILD_DIR)/pq_unsorted.o $(BUILD_DIR)/pq_dary.o \
 	$(BUILD_DIR)/dijkstra_core.o
 
+TST_CSR_OBJS := $(BUILD_DIR)/test_csr.o $(BUILD_DIR)/util.o $(BUILD_DIR)/csr.o
+
 ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS))
 DEPS := $(ALL_OBJS:.o=.d)
 
@@ -65,8 +67,6 @@ $(TST_EXEC): $(BIN_TEST_OBJS)
 $(TST_DIJKSTRA): $(TST_DIJKSTRA_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
-
-TST_CSR_OBJS := $(BUILD_DIR)/test_csr.o $(BUILD_DIR)/util.o $(BUILD_DIR)/csr.o
 
 $(TST_CSR): $(TST_CSR_OBJS)
 	mkdir -p $(dir $@)
