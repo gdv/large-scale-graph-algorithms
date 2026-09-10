@@ -50,6 +50,15 @@ src = [
 
 
 [[bin]]
+name = "flow"
+src = [
+  "src/flow_main.c",
+  "src/graph_io.c",
+  "src/util.c",
+  "src/flow.c",
+]
+
+[[bin]]
 name = "search"
 src = [
   "src/search_main.c",

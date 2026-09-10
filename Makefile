@@ -3,6 +3,7 @@ TST_EXEC       := bin/test_coloring
 TARGET_DIJKSTRA_IGRAPH := bin/dijkstra-igraph
 TARGET_DIJKSTRA := bin/dijkstra
 TARGET_SEARCH := bin/search
+TARGET_FLOW := bin/flow
 TST_DIJKSTRA   := bin/test_dijkstra
 TST_CSR        := bin/test_csr
 TST_SEARCH      := bin/test_search
@@ -12,7 +13,7 @@ BUILD_DIR      := ./build
 SRC_DIRS       := ./src
 TST_DIRS       := ./tests
 
-BINS := $(TARGET_EXEC) $(TARGET_DIJKSTRA_IGRAPH) $(TARGET_DIJKSTRA) $(TARGET_SEARCH)
+BINS := $(TARGET_EXEC) $(TARGET_DIJKSTRA_IGRAPH) $(TARGET_DIJKSTRA) $(TARGET_SEARCH) $(TARGET_FLOW)
 
 
 
@@ -27,6 +28,9 @@ BIN_DIJKSTRA_OBJS := $(addprefix $(BUILD_DIR)/, dijkstra_main2.o graph_io.o \
 
 BIN_SEARCH_OBJS := $(addprefix $(BUILD_DIR)/, search_main.o graph_io.o \
 	util.o csr.o search.o connectivity.o)
+
+BIN_FLOW_OBJS := $(addprefix $(BUILD_DIR)/, flow_main.o graph_io.o \
+	util.o flow.o)
 
 ALGO_OBJS := $(filter-out $(BUILD_DIR)/coloring.o, $(BIN_COLORING_OBJS))
 TST_OBJ   := $(BUILD_DIR)/test_coloring.o
@@ -50,7 +54,7 @@ TST_CONNECTIVITY_OBJS := $(BUILD_DIR)/test_connectivity.o $(BUILD_DIR)/util.o \
 
 TST_FLOW_OBJS := $(BUILD_DIR)/test_flow.o $(BUILD_DIR)/util.o $(BUILD_DIR)/flow.o
 
-ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(BIN_SEARCH_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS) $(TST_SEARCH_OBJS) $(TST_CONNECTIVITY_OBJS) $(TST_FLOW_OBJS))
+ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(BIN_SEARCH_OBJS) $(BIN_FLOW_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS) $(TST_SEARCH_OBJS) $(TST_CONNECTIVITY_OBJS) $(TST_FLOW_OBJS))
 DEPS := $(ALL_OBJS:.o=.d)
 
 vpath %.c $(SRC_DIRS) $(TST_DIRS)
@@ -76,6 +80,10 @@ $(TARGET_DIJKSTRA): $(BIN_DIJKSTRA_OBJS)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 $(TARGET_SEARCH): $(BIN_SEARCH_OBJS)
+	mkdir -p $(dir $@)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+$(TARGET_FLOW): $(BIN_FLOW_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
