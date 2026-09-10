@@ -38,12 +38,29 @@ int main(int argc, char **argv)
         else usage(argv[0]);
     }
     if (!input || !algo) usage(argv[0]);
+    if (strcmp(algo, "bfs") && strcmp(algo, "dfs") && strcmp(algo, "astar") &&
+        strcmp(algo, "scc") && strcmp(algo, "ap") && strcmp(algo, "biconnected") &&
+        strcmp(algo, "bridges") && strcmp(algo, "edge2"))
+        usage(argv[0]);
 
     igraph_set_attribute_table(&igraph_cattribute_table);
     igraph_t g = read_graph_or_die(input, 0);
     csr_t c;
     csr_build(&c, &g, false);   /* the algorithms here run on undirected graphs */
     igraph_destroy(&g);
+
+    if (source < 0 || source >= c.n) {
+        fprintf(stderr, "source %" IGRAPH_PRId " out of range [0,%" IGRAPH_PRId ")\n",
+                source, c.n);
+        csr_destroy(&c);
+        return 1;
+    }
+    if (!strcmp(algo, "astar") && (target < 0 || target >= c.n)) {
+        fprintf(stderr, "target %" IGRAPH_PRId " out of range [0,%" IGRAPH_PRId ")\n",
+                target, c.n);
+        csr_destroy(&c);
+        return 1;
+    }
 
     printf("{\"algorithm\": \"%s\", \"n\": %" IGRAPH_PRId "}\n", algo, c.n);
 

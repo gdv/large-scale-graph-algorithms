@@ -106,7 +106,7 @@ void articulation_points_run(const csr_t *g, ap_result_t *res)
             if (fr->next_arc < g->offsets[u + 1]) {
                 igraph_integer_t a = fr->next_arc++;
                 igraph_integer_t w = g->targets[a];
-                if (w == fr->parent) continue;    /* arc back to DFS parent */
+                if (fr->parent != -1 && a == g->rev[fr->tree_arc]) continue;
                 if (depth[w] == -1) {              /* tree edge */
                     depth[w] = depth[u] + 1;
                     low[w] = depth[w];
@@ -169,7 +169,9 @@ void biconnected_run(const csr_t *g, biconnected_result_t *res)
             if (fr->next_arc < g->offsets[u + 1]) {
                 igraph_integer_t a = fr->next_arc++;
                 igraph_integer_t w = g->targets[a];
-                if (w == fr->parent) continue;
+                if (fr->parent != -1 && a == g->rev[fr->tree_arc]) continue;
+                /* ^ skip only the tree arc's sibling: parallel edges to the
+                 * parent then behave as back edges */
                 if (depth[w] == -1) {
                     edge_stack[ep++] = a;          /* tree arc joins a block */
                     depth[w] = depth[u] + 1;
@@ -244,7 +246,9 @@ void bridges_run(const csr_t *g, bridges_result_t *res)
             if (fr->next_arc < g->offsets[u + 1]) {
                 igraph_integer_t a = fr->next_arc++;
                 igraph_integer_t w = g->targets[a];
-                if (w == fr->parent) continue;
+                if (fr->parent != -1 && a == g->rev[fr->tree_arc]) continue;
+                /* ^ skip only the tree arc's sibling: parallel edges to the
+                 * parent then behave as back edges */
                 if (depth[w] == -1) {
                     depth[w] = depth[u] + 1;
                     low[w] = depth[w];

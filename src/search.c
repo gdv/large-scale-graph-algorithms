@@ -57,16 +57,20 @@ void dfs_run(const csr_t *g, igraph_integer_t source, dfs_result_t *res)
         res->parent[v] = -1; res->dis[v] = -1; res->fin[v] = -1; res->comp[v] = -1;
     }
 
+    /* `source` only sets where the numbering starts: the DFS covers the
+     * whole graph, rooted at `source` first. */
+    igraph_integer_t first = source;
     igraph_integer_t time = 0, comp = 0;
     dfs_frame_t *stack = xmalloc((size_t)n * sizeof(dfs_frame_t));
 
     for (igraph_integer_t s = 0; s < n; s++) {
-        if (res->dis[s] != -1) continue;
+        igraph_integer_t start = (s == 0) ? first : s;
+        if (res->dis[start] != -1) continue;
 
         igraph_integer_t sp = 0;
-        stack[sp++] = (dfs_frame_t){s, g->offsets[s]};
-        res->dis[s] = time++;
-        res->comp[s] = comp;
+        stack[sp++] = (dfs_frame_t){start, g->offsets[start]};
+        res->dis[start] = time++;
+        res->comp[start] = comp;
 
         while (sp > 0) {
             dfs_frame_t *fr = &stack[sp - 1];
@@ -155,7 +159,10 @@ bool astar_run(const csr_t *g, igraph_integer_t source, igraph_integer_t target,
     }
     bool *closed = xcalloc((size_t)n, sizeof(bool));
 
-    heap_item_t *heap = xmalloc((size_t)n * sizeof(heap_item_t));
+    /* A vertex may be re-pushed whenever dist[w] improves; each arc is
+     * scanned at most once (every vertex closes at most once), so the
+     * total number of pushes is at most 1 + m. */
+    heap_item_t *heap = xmalloc((size_t)(g->m + 1) * sizeof(heap_item_t));
     igraph_integer_t hsize = 0;
 
     dist[source] = 0;

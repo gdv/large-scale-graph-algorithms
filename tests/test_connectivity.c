@@ -147,7 +147,7 @@ static void test_biconnected(void)
     }
     check("biconnected: 1 triangle block + 2 trivial", tri == 1 && single == 2);
 
-    igraph_int_t no = 0;
+    igraph_integer_t no = 0;
     igraph_vector_int_list_t comps, edges_l;
     igraph_vector_int_t aps;
     igraph_vector_int_list_init(&comps, 0);
