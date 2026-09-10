@@ -5,6 +5,7 @@ TARGET_DIJKSTRA := bin/dijkstra
 TARGET_SEARCH := bin/search
 TARGET_FLOW := bin/flow
 TARGET_MATCHING := bin/matching
+TARGET_COMPRESS := bin/compress
 TST_DIJKSTRA   := bin/test_dijkstra
 TST_CSR        := bin/test_csr
 TST_SEARCH      := bin/test_search
@@ -12,11 +13,12 @@ TST_CONNECTIVITY := bin/test_connectivity
 TST_FLOW := bin/test_flow
 TST_MATCHING := bin/test_matching
 TST_COMPRESS := bin/test_compress
+TST_RAND := bin/test_random
 BUILD_DIR      := ./build
 SRC_DIRS       := ./src
 TST_DIRS       := ./tests
 
-BINS := $(TARGET_EXEC) $(TARGET_DIJKSTRA_IGRAPH) $(TARGET_DIJKSTRA) $(TARGET_SEARCH) $(TARGET_FLOW) $(TARGET_MATCHING)
+BINS := $(TARGET_EXEC) $(TARGET_DIJKSTRA_IGRAPH) $(TARGET_DIJKSTRA) $(TARGET_SEARCH) $(TARGET_FLOW) $(TARGET_MATCHING) $(TARGET_COMPRESS)
 
 
 
@@ -37,6 +39,9 @@ BIN_FLOW_OBJS := $(addprefix $(BUILD_DIR)/, flow_main.o graph_io.o \
 
 BIN_MATCHING_OBJS := $(addprefix $(BUILD_DIR)/, matching_main.o graph_io.o \
 	util.o csr.o matching.o hungarian.o flow.o)
+
+BIN_COMPRESS_OBJS := $(addprefix $(BUILD_DIR)/, compress_main.o graph_io.o \
+	util.o bitio.o codes.o huffman.o mtf.o graphcode.o)
 
 ALGO_OBJS := $(filter-out $(BUILD_DIR)/coloring.o, $(BIN_COLORING_OBJS))
 TST_OBJ   := $(BUILD_DIR)/test_coloring.o
@@ -68,7 +73,11 @@ TST_COMPRESS_OBJS := $(BUILD_DIR)/test_compress.o $(BUILD_DIR)/util.o \
 	$(BUILD_DIR)/bitio.o $(BUILD_DIR)/codes.o $(BUILD_DIR)/huffman.o \
 	$(BUILD_DIR)/mtf.o $(BUILD_DIR)/graphcode.o
 
-ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(BIN_SEARCH_OBJS) $(BIN_FLOW_OBJS) $(BIN_MATCHING_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS) $(TST_SEARCH_OBJS) $(TST_CONNECTIVITY_OBJS) $(TST_FLOW_OBJS) $(TST_MATCHING_OBJS) $(TST_COMPRESS_OBJS))
+TST_RAND_OBJS := $(BUILD_DIR)/test_random.o $(BUILD_DIR)/util.o \
+	$(BUILD_DIR)/edgegraph.o $(BUILD_DIR)/uf.o $(BUILD_DIR)/karger.o \
+	$(BUILD_DIR)/maxcut.o
+
+ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(BIN_SEARCH_OBJS) $(BIN_FLOW_OBJS) $(BIN_MATCHING_OBJS) $(BIN_COMPRESS_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS) $(TST_SEARCH_OBJS) $(TST_CONNECTIVITY_OBJS) $(TST_FLOW_OBJS) $(TST_MATCHING_OBJS) $(TST_COMPRESS_OBJS) $(TST_RAND_OBJS))
 DEPS := $(ALL_OBJS:.o=.d)
 
 vpath %.c $(SRC_DIRS) $(TST_DIRS)
@@ -105,6 +114,10 @@ $(TARGET_MATCHING): $(BIN_MATCHING_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
+$(TARGET_COMPRESS): $(BIN_COMPRESS_OBJS)
+	mkdir -p $(dir $@)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
 $(TST_EXEC): $(BIN_TEST_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
@@ -137,8 +150,12 @@ $(TST_COMPRESS): $(TST_COMPRESS_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
+$(TST_RAND): $(TST_RAND_OBJS)
+	mkdir -p $(dir $@)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
 .PHONY: test tests
-test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING) $(TST_COMPRESS)
+test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING) $(TST_COMPRESS) $(TST_RAND)
 	./$(TST_EXEC)
 	./$(TST_DIJKSTRA)
 	./$(TST_CSR)
@@ -147,6 +164,7 @@ test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIV
 	./$(TST_FLOW)
 	./$(TST_MATCHING)
 	./$(TST_COMPRESS)
+	./$(TST_RAND)
 
 $(BUILD_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
@@ -154,7 +172,7 @@ $(BUILD_DIR)/%.o: %.c
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING) $(TST_COMPRESS)
+	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING) $(TST_COMPRESS) $(TST_RAND)
 
 -include $(DEPS)
 # Dep: igraph (system, located via pkg-config)

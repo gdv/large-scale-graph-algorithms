@@ -50,6 +50,19 @@ src = [
 
 
 [[bin]]
+name = "compress"
+src = [
+  "src/compress_main.c",
+  "src/graph_io.c",
+  "src/util.c",
+  "src/bitio.c",
+  "src/codes.c",
+  "src/huffman.c",
+  "src/mtf.c",
+  "src/graphcode.c",
+]
+
+[[bin]]
 name = "matching"
 src = [
   "src/matching_main.c",
@@ -91,6 +104,7 @@ sources = [
   "tests/test_flow.c",
   "tests/test_matching.c",
   "tests/test_compress.c",
+  "tests/test_random.c",
   "src/util.c",
   "src/csr.c",
   "src/search.c",
@@ -103,6 +117,10 @@ sources = [
   "src/huffman.c",
   "src/mtf.c",
   "src/graphcode.c",
+  "src/edgegraph.c",
+  "src/uf.c",
+  "src/karger.c",
+  "src/maxcut.c",
   "src/greedy.c",
   "src/welsh_powell.c",
   "src/dsatur.c",
