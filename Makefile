@@ -11,6 +11,7 @@ TST_SEARCH      := bin/test_search
 TST_CONNECTIVITY := bin/test_connectivity
 TST_FLOW := bin/test_flow
 TST_MATCHING := bin/test_matching
+TST_COMPRESS := bin/test_compress
 BUILD_DIR      := ./build
 SRC_DIRS       := ./src
 TST_DIRS       := ./tests
@@ -63,7 +64,11 @@ TST_MATCHING_OBJS := $(BUILD_DIR)/test_matching.o $(BUILD_DIR)/util.o \
 	$(BUILD_DIR)/csr.o $(BUILD_DIR)/matching.o $(BUILD_DIR)/hungarian.o \
 	$(BUILD_DIR)/flow.o
 
-ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(BIN_SEARCH_OBJS) $(BIN_FLOW_OBJS) $(BIN_MATCHING_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS) $(TST_SEARCH_OBJS) $(TST_CONNECTIVITY_OBJS) $(TST_FLOW_OBJS) $(TST_MATCHING_OBJS))
+TST_COMPRESS_OBJS := $(BUILD_DIR)/test_compress.o $(BUILD_DIR)/util.o \
+	$(BUILD_DIR)/bitio.o $(BUILD_DIR)/codes.o $(BUILD_DIR)/huffman.o \
+	$(BUILD_DIR)/mtf.o $(BUILD_DIR)/graphcode.o
+
+ALL_OBJS := $(sort $(BIN_COLORING_OBJS) $(BIN_DIJKSTRA_IGRAPH_OBJS) $(BIN_DIJKSTRA_OBJS) $(BIN_SEARCH_OBJS) $(BIN_FLOW_OBJS) $(BIN_MATCHING_OBJS) $(TST_OBJ) $(TST_DIJKSTRA_OBJS) $(TST_CSR_OBJS) $(TST_SEARCH_OBJS) $(TST_CONNECTIVITY_OBJS) $(TST_FLOW_OBJS) $(TST_MATCHING_OBJS) $(TST_COMPRESS_OBJS))
 DEPS := $(ALL_OBJS:.o=.d)
 
 vpath %.c $(SRC_DIRS) $(TST_DIRS)
@@ -128,8 +133,12 @@ $(TST_MATCHING): $(TST_MATCHING_OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
+$(TST_COMPRESS): $(TST_COMPRESS_OBJS)
+	mkdir -p $(dir $@)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
 .PHONY: test tests
-test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING)
+test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING) $(TST_COMPRESS)
 	./$(TST_EXEC)
 	./$(TST_DIJKSTRA)
 	./$(TST_CSR)
@@ -137,6 +146,7 @@ test tests: $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIV
 	./$(TST_CONNECTIVITY)
 	./$(TST_FLOW)
 	./$(TST_MATCHING)
+	./$(TST_COMPRESS)
 
 $(BUILD_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
@@ -144,7 +154,7 @@ $(BUILD_DIR)/%.o: %.c
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING)
+	rm -rf $(BUILD_DIR) $(BINS) $(TST_EXEC) $(TST_DIJKSTRA) $(TST_CSR) $(TST_SEARCH) $(TST_CONNECTIVITY) $(TST_FLOW) $(TST_MATCHING) $(TST_COMPRESS)
 
 -include $(DEPS)
 # Dep: igraph (system, located via pkg-config)
