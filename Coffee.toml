@@ -49,6 +49,17 @@ src = [
 ]
 
 
+[[bin]]
+name = "search"
+src = [
+  "src/search_main.c",
+  "src/graph_io.c",
+  "src/util.c",
+  "src/csr.c",
+  "src/search.c",
+  "src/connectivity.c",
+]
+
 [test]
 sources = [
   "tests/test_coloring.c",
