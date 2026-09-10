@@ -50,6 +50,18 @@ src = [
 
 
 [[bin]]
+name = "randomized"
+src = [
+  "src/rand_main.c",
+  "src/graph_io.c",
+  "src/util.c",
+  "src/edgegraph.c",
+  "src/uf.c",
+  "src/karger.c",
+  "src/maxcut.c",
+]
+
+[[bin]]
 name = "compress"
 src = [
   "src/compress_main.c",
