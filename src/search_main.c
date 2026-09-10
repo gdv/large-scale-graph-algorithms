@@ -62,59 +62,59 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    printf("{\"algorithm\": \"%s\", \"n\": %" IGRAPH_PRId "}\n", algo, c.n);
+    printf("{\"algorithm\": \"%s\", \"n\": %" IGRAPH_PRId ",\n", algo, c.n);
 
     if (!strcmp(algo, "bfs")) {
         bfs_result_t r;
         bfs_run(&c, source, &r);
-        printf("\"reached\": %" IGRAPH_PRId "\n", r.n_reached);
-        printf("\"dist\": [");
+        printf(" \"reached\": %" IGRAPH_PRId ",\n", r.n_reached);
+        printf(" \"dist\": [");
         for (igraph_integer_t v = 0; v < c.n; v++)
             printf("%s%" IGRAPH_PRId, v ? ", " : "", r.dist[v]);
-        printf("]\n");
+        printf("]}\n");
         bfs_result_destroy(&r);
     } else if (!strcmp(algo, "dfs")) {
         dfs_result_t r;
         dfs_run(&c, source, &r);
-        printf("\"dis\": [");
+        printf(" \"dis\": [");
         for (igraph_integer_t v = 0; v < c.n; v++)
             printf("%s%" IGRAPH_PRId, v ? ", " : "", r.dis[v]);
-        printf("]\n\"comp\": [");
+        printf("],\n \"comp\": [");
         for (igraph_integer_t v = 0; v < c.n; v++)
             printf("%s%" IGRAPH_PRId, v ? ", " : "", r.comp[v]);
-        printf("]\n");
+        printf("]}\n");
         dfs_result_destroy(&r);
     } else if (!strcmp(algo, "astar")) {
         igraph_real_t *dist = xmalloc((size_t)c.n * sizeof(igraph_real_t));
         igraph_integer_t *parent = xmalloc((size_t)c.n * sizeof(igraph_integer_t));
         bool ok = astar_run(&c, source, target, null_heuristic, NULL, dist, parent);
-        printf("\"reached_target\": %s\n\"dist_target\": %g\n",
+        printf(" \"reached_target\": %s, \"dist_target\": %g}\n",
                ok ? "true" : "false", ok ? dist[target] : -1.0);
         free(dist);
         free(parent);
     } else if (!strcmp(algo, "scc")) {
         scc_result_t r;
         scc_run(&c, &r);
-        printf("\"n_comp\": %" IGRAPH_PRId "\n", r.n_comp);
+        printf(" \"n_comp\": %" IGRAPH_PRId "}\n", r.n_comp);
         scc_result_destroy(&r);
     } else if (!strcmp(algo, "ap")) {
         ap_result_t r;
         articulation_points_run(&c, &r);
-        printf("\"articulation_points\": [");
+        printf(" \"articulation_points\": [");
         igraph_integer_t first = 1;
         for (igraph_integer_t v = 0; v < c.n; v++)
             if (r.is_ap[v]) { printf("%s%" IGRAPH_PRId, first ? "" : ", ", v); first = 0; }
-        printf("]\n");
+        printf("]}\n");
         ap_result_destroy(&r);
     } else if (!strcmp(algo, "biconnected")) {
         biconnected_result_t r;
         biconnected_run(&c, &r);
-        printf("\"n_blocks\": %" IGRAPH_PRId "\n", r.n_blocks);
+        printf(" \"n_blocks\": %" IGRAPH_PRId "}\n", r.n_blocks);
         biconnected_result_destroy(&r);
     } else if (!strcmp(algo, "bridges")) {
         bridges_result_t r;
         bridges_run(&c, &r);
-        printf("\"bridge_edges\": [");
+        printf(" \"bridge_edges\": [");
         igraph_integer_t first = 1;
         for (igraph_integer_t a = 0; a < c.m; a++)
             if (r.is_bridge[a] && a < c.rev[a]) {
@@ -122,12 +122,12 @@ int main(int argc, char **argv)
                        first ? "" : ", ", c.targets[c.rev[a]], c.targets[a]);
                 first = 0;
             }
-        printf("]\n");
+        printf("]}\n");
         bridges_result_destroy(&r);
     } else if (!strcmp(algo, "edge2")) {
         edge2_result_t r;
         edge2_components_run(&c, &r);
-        printf("\"n_comp\": %" IGRAPH_PRId "\n", r.n_comp);
+        printf(" \"n_comp\": %" IGRAPH_PRId "}\n", r.n_comp);
         edge2_result_destroy(&r);
     } else {
         usage(argv[0]);

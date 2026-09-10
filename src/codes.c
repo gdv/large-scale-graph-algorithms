@@ -19,7 +19,10 @@ void elias_gamma_encode(bitwriter_t *w, uint64_t x)
 uint64_t elias_gamma_decode(bitreader_t *r)
 {
     unsigned n = 0;
-    while (bitreader_read(r) == 0) n++;
+    while (bitreader_read(r) == 0) {
+        if (bitreader_eof(r) || n >= 63) return 0;   /* truncated input */
+        n++;
+    }
     return ((uint64_t)1 << n) | bitreader_read_bits(r, n);
 }
 
@@ -60,6 +63,7 @@ uint64_t nibble_decode(bitreader_t *r)
         unsigned byte = (unsigned)bitreader_read_bits(r, 4);
         x = (x << 3) | (byte & 7);
         if (byte & 8) break;
+        if (bitreader_eof(r)) return 0;              /* truncated input */
     }
     return x;
 }
@@ -98,7 +102,10 @@ void zeta_encode(bitwriter_t *w, uint64_t x, unsigned k)
 uint64_t zeta_decode(bitreader_t *r, unsigned k)
 {
     uint64_t h = 0;
-    while (bitreader_read(r) == 0) h++;
+    while (bitreader_read(r) == 0) {
+        if (bitreader_eof(r) || h >= 63) return 0;   /* truncated input */
+        h++;
+    }
     uint64_t lower = (uint64_t)1 << (h * k);
     uint64_t upper = lower << k;
     return lower + minbin_decode(r, upper - lower);

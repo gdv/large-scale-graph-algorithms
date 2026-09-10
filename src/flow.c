@@ -217,6 +217,10 @@ igraph_real_t flow_preflow_push(flow_t *f, igraph_integer_t s, igraph_integer_t 
     igraph_integer_t *h = xmalloc((size_t)n * sizeof(igraph_integer_t));
     igraph_real_t *excess = xcalloc((size_t)n, sizeof(igraph_real_t));
     bool *in_q = xcalloc((size_t)n, sizeof(bool));
+    /* The discharge FIFO below reuses q as a RING buffer of n slots:
+     * vertices are re-enqueued many times over the run, but in_q[]
+     * guarantees at most n live entries, so indices are taken modulo n.
+     * The height BFS below walks each vertex once, so it also fits. */
     igraph_integer_t *q = xmalloc((size_t)n * sizeof(igraph_integer_t));
 
     /* 1. heights: reverse BFS from t in the residual network.
@@ -231,15 +235,15 @@ igraph_real_t flow_preflow_push(flow_t *f, igraph_integer_t s, igraph_integer_t 
 
     for (igraph_integer_t v = 0; v < n; v++) h[v] = -1;
     igraph_integer_t qh = 0, qt = 0;
-    q[qt++] = t;
+    q[qt++ % n] = t;
     h[t] = 0;
     while (qh < qt) {
-        igraph_integer_t x = q[qh++];
+        igraph_integer_t x = q[qh++ % n];
         for (igraph_integer_t ra = rev_head[x]; ra != -1; ra = rev_next[ra]) {
             igraph_integer_t u = f->to[ra ^ 1]; /* origin of arc ra: u -> x */
             if (f->cap[ra] > 0.0 && h[u] == -1) {
                 h[u] = h[x] + 1;
-                q[qt++] = u;
+                q[qt++ % n] = u;
             }
         }
     }
@@ -255,14 +259,14 @@ igraph_real_t flow_preflow_push(flow_t *f, igraph_integer_t s, igraph_integer_t 
             excess[w] += f->cap[a];
             f->cap[a ^ 1] += f->cap[a];
             f->cap[a] = 0.0;
-            if (w != t && !in_q[w]) { in_q[w] = true; q[qt++] = w; }
+            if (w != t && !in_q[w]) { in_q[w] = true; q[qt++ % n] = w; }
         }
     }
 
     /* 3. FIFO discharge */
     igraph_real_t total = 0.0;
     while (qh < qt) {
-        igraph_integer_t u = q[qh++];
+        igraph_integer_t u = q[qh++ % n];
         in_q[u] = false;
         while (excess[u] > 0.0) {
             igraph_integer_t a;
@@ -277,7 +281,7 @@ igraph_real_t flow_preflow_push(flow_t *f, igraph_integer_t s, igraph_integer_t 
                 excess[u] -= d;
                 excess[w] += d;
                 if (w == t) total += d;
-                else if (w != s && !in_q[w]) { in_q[w] = true; q[qt++] = w; }
+                else if (w != s && !in_q[w]) { in_q[w] = true; q[qt++ % n] = w; }
             } else {                            /* relabel */
                 igraph_real_t best = IGRAPH_INFINITY;
                 for (a = f->head[u]; a != -1; a = f->next[a])
