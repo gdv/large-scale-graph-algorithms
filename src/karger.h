@@ -16,7 +16,7 @@ igraph_integer_t karger_mincut(const edge_graph_t *g, rng_t *rng,
 /* Karger-Stein recursion (returns the cut value). */
 igraph_integer_t karger_stein(const edge_graph_t *g, rng_t *rng);
 
-/* Exact min cut by brute force (2^(n-1) partitions); test oracle and
- * base case for Karger-Stein on tiny graphs (n <= 12). */
+/* Exact min cut by brute force (2^(n-1) partitions; use for small n);
+ * test oracle and base case for Karger-Stein (n <= 6). */
 igraph_integer_t karger_brute_mincut(const edge_graph_t *g);
 #endif

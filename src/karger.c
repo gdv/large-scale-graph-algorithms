@@ -1,6 +1,8 @@
 #include "karger.h"
 
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Fisher-Yates shuffle of edge indices (in place into perm). */
 static void shuffle_edges(const edge_graph_t *g, rng_t *rng, igraph_integer_t *perm)
@@ -70,6 +72,10 @@ igraph_integer_t karger_brute_mincut(const edge_graph_t *g)
 {
     igraph_integer_t n = g->n;
     if (n <= 1) return 0;
+    if (n > 24) {
+        fprintf(stderr, "brute-force mincut: n=%" IGRAPH_PRId " too large\n", n);
+        exit(1);
+    }
     igraph_integer_t best = g->m + 1;
     /* fix vertex 0 on side A; enumerate all subsets of the others,
      * skipping the partition with an empty other side */
