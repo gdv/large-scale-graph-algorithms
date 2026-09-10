@@ -50,6 +50,18 @@ src = [
 
 
 [[bin]]
+name = "matching"
+src = [
+  "src/matching_main.c",
+  "src/graph_io.c",
+  "src/util.c",
+  "src/csr.c",
+  "src/matching.c",
+  "src/hungarian.c",
+  "src/flow.c",
+]
+
+[[bin]]
 name = "flow"
 src = [
   "src/flow_main.c",
