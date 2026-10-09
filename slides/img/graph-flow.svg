@@ -43,7 +43,7 @@
        ry="30"
        id="ellipse208" />
     <ellipse
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        cx="130"
        cy="330"
        rx="30"
@@ -60,7 +60,7 @@
        ry="30"
        id="ellipse214" />
     <ellipse
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        cx="350"
        cy="210"
        rx="30"
@@ -77,7 +77,7 @@
        ry="30"
        id="ellipse220" />
     <ellipse
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        cx="570"
        cy="210"
        rx="30"
@@ -94,7 +94,7 @@
        ry="30"
        id="ellipse226" />
     <ellipse
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        cx="350"
        cy="450"
        rx="30"
@@ -111,7 +111,7 @@
        ry="30"
        id="ellipse232" />
     <ellipse
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        cx="570"
        cy="450"
        rx="30"
@@ -128,7 +128,7 @@
        ry="30"
        id="ellipse238" />
     <ellipse
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        cx="790"
        cy="330"
        rx="30"
@@ -138,167 +138,167 @@
   <g
      id="g250">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="157.205"
        y1="315.161"
        x2="313.139"
        y2="230.106"
        id="line244" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="315.533,234.496 321.918,225.318 310.744,225.717 "
        id="polygon246" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="315.533,234.496 321.918,225.318 310.744,225.717 "
        id="polygon248" />
   </g>
   <g
      id="g258">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="157.205"
        y1="344.839"
        x2="313.139"
        y2="429.894"
        id="line252" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="310.744,434.283 321.918,434.682 315.533,425.504 "
        id="polygon254" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="310.744,434.283 321.918,434.682 315.533,425.504 "
        id="polygon256" />
   </g>
   <g
      id="g266">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="381.005"
        y1="450"
        x2="527.995"
        y2="450"
        id="line260" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="527.995,455 537.995,450 527.995,445 "
        id="polygon262" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="527.995,455 537.995,450 527.995,445 "
        id="polygon264" />
   </g>
   <g
      id="g274">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="350"
        y1="241.003"
        x2="350"
        y2="407.997"
        id="line268" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="345,407.997 350,417.997 355,407.997 "
        id="polygon270" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="345,407.997 350,417.997 355,407.997 "
        id="polygon272" />
   </g>
   <g
      id="g282">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="597.205"
        y1="224.839"
        x2="753.139"
        y2="309.894"
        id="line276" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="750.744,314.283 761.918,314.682 755.533,305.504 "
        id="polygon278" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="750.744,314.283 761.918,314.682 755.533,305.504 "
        id="polygon280" />
   </g>
   <g
      id="g290">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="381.005"
        y1="210"
        x2="527.995"
        y2="210"
        id="line284" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="527.995,215 537.995,210 527.995,205 "
        id="polygon286" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="527.995,215 537.995,210 527.995,205 "
        id="polygon288" />
   </g>
   <g
      id="g298">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="370.954"
        y1="232.859"
        x2="541.613"
        y2="419.032"
        id="line292" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="537.927,422.411 548.37,426.404 545.299,415.654 "
        id="polygon294" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="537.927,422.411 548.37,426.404 545.299,415.654 "
        id="polygon296" />
   </g>
   <g
      id="g306">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="570"
        y1="418.997"
        x2="570"
        y2="252.003"
        id="line300" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="575,252.003 570,242.003 565,252.003 "
        id="polygon302" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="575,252.003 570,242.003 565,252.003 "
        id="polygon304" />
   </g>
   <g
      id="g314">
     <line
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        x1="597.205"
        y1="435.161"
        x2="753.139"
        y2="350.106"
        id="line308" />
     <polygon
-       style="fill: #000000"
+       style="fill: #ffffff"
        points="755.533,354.496 761.918,345.318 750.744,345.717 "
        id="polygon310" />
     <polygon
-       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff"
        points="755.533,354.496 761.918,345.318 750.744,345.717 "
        id="polygon312" />
   </g>
   <text
-     style="fill: #000000;text-anchor:start;font-size:31.6089;font-family:sanserif;font-style:normal;font-weight:normal"
+     style="fill: #ffffff;text-anchor:start;font-size:31.6089;font-family:sanserif;font-style:normal;font-weight:normal"
      x="120"
      y="340"
      id="text318"><tspan
@@ -306,7 +306,7 @@
        y="340"
        id="tspan316">s</tspan></text>
   <text
-     style="fill: #000000;text-anchor:start;font-size:31.6089;font-family:sanserif;font-style:normal;font-weight:normal"
+     style="fill: #ffffff;text-anchor:start;font-size:31.6089;font-family:sanserif;font-style:normal;font-weight:normal"
      x="780"
      y="340"
      id="text322"><tspan
@@ -314,91 +314,91 @@
        y="340"
        id="tspan320">t</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="200"
      y="260"
      id="text326"><tspan
        sodipodi:role="line"
        id="tspan1342">/10</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="200"
      y="420"
      id="text330"><tspan
        sodipodi:role="line"
        id="tspan1344">/10</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="300"
      y="320"
      id="text334"><tspan
        sodipodi:role="line"
        id="tspan1340">/2</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="460"
      y="320"
      id="text338"><tspan
        sodipodi:role="line"
        id="tspan1336">/8</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="440"
      y="200"
      id="text342"><tspan
        sodipodi:role="line"
        id="tspan1338">/4</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="680"
      y="260"
      id="text346"><tspan
        sodipodi:role="line"
        id="tspan1332">   /10</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="680"
      y="420"
      id="text350"><tspan
        sodipodi:role="line"
        id="tspan1330">  /10</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="580"
      y="320"
      id="text354"><tspan
        sodipodi:role="line"
        id="tspan1334">/6</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:23.7067px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="440"
      y="480"
      id="text358"><tspan
        sodipodi:role="line"
        id="tspan1328">/9</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="340"
      y="220"
      id="text362"><tspan
        sodipodi:role="line"
        id="tspan768">a</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="560"
      y="220"
      id="text366"><tspan
        sodipodi:role="line"
        id="tspan770">c</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="340"
      y="460"
      id="text370"><tspan
        sodipodi:role="line"
        id="tspan772">b</tspan></text>
   <text
-     style="fill:#000000;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;fill-opacity:1;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+     style="fill:#ffffff;text-anchor:start;font-size:31.6089px;font-family:sanserif;font-style:normal;font-weight:normal;fill-opacity:1;-inkscape-font-specification:'sanserif, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="560"
      y="460"
      id="text374"><tspan
