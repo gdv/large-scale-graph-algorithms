@@ -3,10 +3,17 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 permissions:
   contents: write
-  
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   build_latex:
     runs-on: ubuntu-latest
@@ -19,9 +26,56 @@ jobs:
           root_file: "*.tex"
           working_directory: slides
           continue_on_error: true
-          latexmk_use_lualatex: true      
+          latexmk_use_lualatex: true
       - name: Release PDF file
         uses: softprops/action-gh-release@v2
         with:
           files: "slides/*.pdf"
+      - name: Build GitHub Pages site
+        run: |
+          set -euo pipefail
+          mkdir -p _site/slides
+          cp slides/*.pdf _site/slides/
+          {
+            cat <<'HEADER'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Large-scale Graph Algorithms - Slides</title>
+            <style>
+              body { font-family: system-ui, sans-serif; max-width: 40em; margin: 2em auto; padding: 0 1em; line-height: 1.5; }
+              li { margin: 0.4em 0; }
+            </style>
+          </head>
+          <body>
+            <h1>Large-scale Graph Algorithms: Slides</h1>
+            <ul>
+          HEADER
+            for pdf in _site/slides/*.pdf; do
+              name=$(basename "$pdf" .pdf)
+              title=$(echo "$name" | sed -E 's/[-_]/ /g; s/^([0-9]+) /\1 - /; s/(^|- )(.)/\1\U\2/g')
+              echo "    <li><a href=\"slides/$name.pdf\">$title</a></li>"
+            done
+            cat <<'FOOTER'
+            </ul>
+          </body>
+          </html>
+          FOOTER
+          } > _site/index.html
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
 
+  deploy_pages:
+    needs: build_latex
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
