@@ -1,8 +1,6 @@
 name: Build LaTeX document
 on:
   push:
-    tags:
-      - "v*"
   workflow_dispatch:
 
 permissions:
@@ -15,19 +13,57 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build_latex:
+  list_slides:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+      - name: List slide decks
+        id: list
+        run: |
+          set -euo pipefail
+          decks=$(cd slides && ls *.tex | jq -R -s -c '
+            split("\n") | map(select(length > 0))
+            | map({file: ., stem: sub("\\.tex$"; "")})')
+          echo "matrix={\"include\":$decks}" >> "$GITHUB_OUTPUT"
+
+  build_latex:
+    needs: list_slides
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.list_slides.outputs.matrix) }}
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
       - name: GitHub Action for LaTeX
         uses: xu-cheng/latex-action@4.0.0
         with:
-          root_file: "*.tex"
+          root_file: ${{ matrix.file }}
           working_directory: slides
           continue_on_error: true
           latexmk_use_lualatex: true
-      - name: Release PDF file
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-${{ matrix.stem }}
+          path: slides/${{ matrix.stem }}.pdf
+          if-no-files-found: warn
+
+  publish:
+    needs: build_latex
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download PDFs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pdf-*
+          merge-multiple: true
+          path: slides
+      - name: Release PDF files
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: "slides/*.pdf"
@@ -70,7 +106,7 @@ jobs:
           path: _site
 
   deploy_pages:
-    needs: build_latex
+    needs: publish
     runs-on: ubuntu-latest
     environment:
       name: github-pages
