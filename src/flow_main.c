@@ -5,6 +5,7 @@
 
 #include "flow.h"
 #include "graph_io.h"
+#include "output.h"
 #include "util.h"
 
 static void usage(const char *prog)
@@ -30,15 +31,16 @@ int main(int argc, char **argv)
     if (!input || !algo) usage(argv[0]);
 
     igraph_set_attribute_table(&igraph_cattribute_table);
-    igraph_t g = read_graph_or_die(input, 0);
+    phase_begin("read");
+    igraph_t g = read_graph_or_die(input, 0, true);
     ensure_directed(&g);
     ensure_weight_attr(&g);   /* "weight" doubles as the capacity */
-
     igraph_integer_t n = (igraph_integer_t)igraph_vcount(&g);
     igraph_integer_t m = (igraph_integer_t)igraph_ecount(&g);
+    phase_end();
+    phase_begin("build");            /* residual network: 2 paired arcs per edge */
     flow_t f;
     flow_init(&f, n, m);
-
     igraph_vector_int_t elist;
     igraph_vector_int_init(&elist, 0);
     igraph_get_edgelist(&g, &elist, false);
@@ -48,6 +50,7 @@ int main(int argc, char **argv)
     }
     igraph_vector_int_destroy(&elist);
     igraph_destroy(&g);
+    phase_end();
 
     if (source < 0 || source >= n || target < 0 || target >= n || source == target) {
         fprintf(stderr,
@@ -65,24 +68,32 @@ int main(int argc, char **argv)
     else usage(argv[0]);
 
     igraph_real_t *flow = xmalloc((size_t)m * sizeof(igraph_real_t));
+    phase_begin("solve");
     igraph_real_t value = run(&f, source, target, flow);
+    phase_end();
 
     bool *side = flow_mincut_side(&f, source);
-    /* cut capacity: saturated forward arcs leaving the s side */
+    /* Cut capacity = sum of the ORIGINAL capacity of the edges leaving the
+     * s side. Two traps here, both worth writing down:
+     *  - only the S -> T direction of an edge crosses the cut. Summing over
+     *    "endpoints on different sides" would also count the T -> S arcs;
+     *  - the original capacity is cap[2k] + cap[2k+1] (residual + flow).
+     * Iterating residual arcs instead double-counts the antiparallel pairs
+     * that ensure_directed() creates from an undirected input. */
     igraph_real_t cut_cap = 0.0;
-    for (igraph_integer_t u = 0; u < f.n; u++) {
-        if (!side[u]) continue;
-        for (igraph_integer_t a = f.head[u]; a != -1; a = f.next[a])
-            if (!side[f.to[a]] && f.cap[a] == 0.0)
-                cut_cap += f.cap[a ^ 1];
+    for (igraph_integer_t k = 0; k < f.m; k++) {
+        if (side[f.to[2 * k + 1]] && !side[f.to[2 * k]])
+            cut_cap += f.cap[2 * k] + f.cap[2 * k + 1];
     }
 
     printf("{\"algorithm\": \"%s\", \"source\": %" IGRAPH_PRId
-           ", \"target\": %" IGRAPH_PRId ", \"value\": %g, \"cut_capacity\": %g}\n",
+           ", \"target\": %" IGRAPH_PRId ", \"value\": %g, \"cut_capacity\": %g",
            algo, source, target, value, cut_cap);
+    metrics_json(stdout);
+    printf("\n}\n");
 
-    free(side);
-    free(flow);
+    xfree(side);
+    xfree(flow);
     flow_destroy(&f);
     return 0;
 }

@@ -65,7 +65,7 @@ void ref_encode_list(bitwriter_t *w, igraph_integer_t prev_v, igraph_integer_t v
     }
     elias_gamma_encode(w, (uint64_t)ne + 1);
     gap_encode_list(w, v, extra, ne);
-    free(extra);
+    xfree(extra);
 }
 
 void ref_decode_list(bitreader_t *r, igraph_integer_t prev_v, igraph_integer_t v,
@@ -91,8 +91,8 @@ void ref_decode_list(bitreader_t *r, igraph_integer_t prev_v, igraph_integer_t v
     while (i < nb) out[k++] = base[i++];
     while (j < ne) out[k++] = extra[j++];
     *out_deg = k;
-    free(base);
-    free(extra);
+    xfree(base);
+    xfree(extra);
 }
 
 void interval_encode_list(bitwriter_t *w, igraph_integer_t v,

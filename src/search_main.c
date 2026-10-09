@@ -6,14 +6,17 @@
 #include "connectivity.h"
 #include "csr.h"
 #include "graph_io.h"
+#include "output.h"
 #include "search.h"
 #include "util.h"
 
 static void usage(const char *prog)
 {
     fprintf(stderr,
-        "usage: %s -i FILE -a ALGO [-s SOURCE] [-t TARGET]\n"
-        "  ALGO: bfs | dfs | astar | scc | ap | biconnected | bridges | edge2\n",
+        "usage: %s -i FILE -a ALGO [-s SOURCE] [-t TARGET] [--directed]\n"
+        "  ALGO: bfs | dfs | astar | scc | ap | biconnected | bridges | edge2\n"
+        "  --directed  keep arc directions (needed by scc; the other\n"
+        "              algorithms are undirected and ignore the flag)\n",
         prog);
     exit(1);
 }
@@ -29,12 +32,14 @@ int main(int argc, char **argv)
 {
     const char *input = NULL, *algo = NULL;
     igraph_integer_t source = 0, target = 0;
+    bool directed = false;
 
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "-i") && i + 1 < argc) input = argv[++i];
         else if (!strcmp(argv[i], "-a") && i + 1 < argc) algo = argv[++i];
         else if (!strcmp(argv[i], "-s") && i + 1 < argc) source = atoll(argv[++i]);
         else if (!strcmp(argv[i], "-t") && i + 1 < argc) target = atoll(argv[++i]);
+        else if (!strcmp(argv[i], "--directed")) directed = true;
         else usage(argv[0]);
     }
     if (!input || !algo) usage(argv[0]);
@@ -44,10 +49,16 @@ int main(int argc, char **argv)
         usage(argv[0]);
 
     igraph_set_attribute_table(&igraph_cattribute_table);
-    igraph_t g = read_graph_or_die(input, 0);
+    phase_begin("read");
+    igraph_t g = read_graph_or_die(input, 0, directed);
+    phase_end();
+    phase_begin("build");
     csr_t c;
-    csr_build(&c, &g, false);   /* the algorithms here run on undirected graphs */
+    /* Everything here but scc is an undirected algorithm; on an undirected
+     * graph csr_build(_, true) would drop one of the two arcs. */
+    csr_build(&c, &g, directed);
     igraph_destroy(&g);
+    phase_end();
 
     if (source < 0 || source >= c.n) {
         fprintf(stderr, "source %" IGRAPH_PRId " out of range [0,%" IGRAPH_PRId ")\n",
@@ -62,6 +73,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    phase_begin("solve");
     printf("{\"algorithm\": \"%s\", \"n\": %" IGRAPH_PRId ",\n", algo, c.n);
 
     if (!strcmp(algo, "bfs")) {
@@ -71,7 +83,7 @@ int main(int argc, char **argv)
         printf(" \"dist\": [");
         for (igraph_integer_t v = 0; v < c.n; v++)
             printf("%s%" IGRAPH_PRId, v ? ", " : "", r.dist[v]);
-        printf("]}\n");
+        printf("]");
         bfs_result_destroy(&r);
     } else if (!strcmp(algo, "dfs")) {
         dfs_result_t r;
@@ -82,20 +94,20 @@ int main(int argc, char **argv)
         printf("],\n \"comp\": [");
         for (igraph_integer_t v = 0; v < c.n; v++)
             printf("%s%" IGRAPH_PRId, v ? ", " : "", r.comp[v]);
-        printf("]}\n");
+        printf("]");
         dfs_result_destroy(&r);
     } else if (!strcmp(algo, "astar")) {
         igraph_real_t *dist = xmalloc((size_t)c.n * sizeof(igraph_real_t));
         igraph_integer_t *parent = xmalloc((size_t)c.n * sizeof(igraph_integer_t));
         bool ok = astar_run(&c, source, target, null_heuristic, NULL, dist, parent);
-        printf(" \"reached_target\": %s, \"dist_target\": %g}\n",
+        printf(" \"reached_target\": %s, \"dist_target\": %g",
                ok ? "true" : "false", ok ? dist[target] : -1.0);
-        free(dist);
-        free(parent);
+        xfree(dist);
+        xfree(parent);
     } else if (!strcmp(algo, "scc")) {
         scc_result_t r;
         scc_run(&c, &r);
-        printf(" \"n_comp\": %" IGRAPH_PRId "}\n", r.n_comp);
+        printf(" \"n_comp\": %" IGRAPH_PRId, r.n_comp);
         scc_result_destroy(&r);
     } else if (!strcmp(algo, "ap")) {
         ap_result_t r;
@@ -104,12 +116,12 @@ int main(int argc, char **argv)
         igraph_integer_t first = 1;
         for (igraph_integer_t v = 0; v < c.n; v++)
             if (r.is_ap[v]) { printf("%s%" IGRAPH_PRId, first ? "" : ", ", v); first = 0; }
-        printf("]}\n");
+        printf("]");
         ap_result_destroy(&r);
     } else if (!strcmp(algo, "biconnected")) {
         biconnected_result_t r;
         biconnected_run(&c, &r);
-        printf(" \"n_blocks\": %" IGRAPH_PRId "}\n", r.n_blocks);
+        printf(" \"n_blocks\": %" IGRAPH_PRId, r.n_blocks);
         biconnected_result_destroy(&r);
     } else if (!strcmp(algo, "bridges")) {
         bridges_result_t r;
@@ -122,16 +134,20 @@ int main(int argc, char **argv)
                        first ? "" : ", ", c.targets[c.rev[a]], c.targets[a]);
                 first = 0;
             }
-        printf("]}\n");
+        printf("]");
         bridges_result_destroy(&r);
     } else if (!strcmp(algo, "edge2")) {
         edge2_result_t r;
         edge2_components_run(&c, &r);
-        printf(" \"n_comp\": %" IGRAPH_PRId "}\n", r.n_comp);
+        printf(" \"n_comp\": %" IGRAPH_PRId, r.n_comp);
         edge2_result_destroy(&r);
     } else {
         usage(argv[0]);
     }
+
+    phase_end();
+    metrics_json(stdout);
+    printf("\n}\n");
 
     csr_destroy(&c);
     return 0;

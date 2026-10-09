@@ -1,3 +1,4 @@
+#include "util.h"
 #include "karger.h"
 
 #include <math.h>
@@ -47,7 +48,7 @@ igraph_integer_t karger_trial(const edge_graph_t *g, rng_t *rng, bool *side)
     for (igraph_integer_t v = 0; v < n; v++)
         side[v] = (uf_find(&uf, v) == c0);
 
-    free(perm);
+    xfree(perm);
     uf_destroy(&uf);
     return cut;
 }
@@ -64,7 +65,7 @@ igraph_integer_t karger_mincut(const edge_graph_t *g, rng_t *rng,
             for (igraph_integer_t v = 0; v < g->n; v++) best_side[v] = side[v];
         }
     }
-    free(side);
+    xfree(side);
     return best;
 }
 
@@ -140,8 +141,8 @@ static void do_contract(const edge_graph_t *g, igraph_integer_t t, rng_t *rng,
         e++;
     }
 
-    free(id);
-    free(perm);
+    xfree(id);
+    xfree(perm);
     uf_destroy(&uf);
 }
 

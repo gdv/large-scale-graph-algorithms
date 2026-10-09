@@ -31,7 +31,7 @@ void flow_add_edge(flow_t *f, igraph_integer_t from, igraph_integer_t to,
 
 void flow_destroy(flow_t *f)
 {
-    free(f->head); free(f->next); free(f->to); free(f->cap);
+    xfree(f->head); xfree(f->next); xfree(f->to); xfree(f->cap);
     f->head = f->next = f->to = NULL;
     f->cap = NULL;
 }
@@ -94,8 +94,8 @@ igraph_real_t flow_ford_fulkerson(flow_t *f, igraph_integer_t s, igraph_integer_
     }
 
     fill_edge_flows(f, flow);
-    free(from_arc);
-    free(stack);
+    xfree(from_arc);
+    xfree(stack);
     return total;
 }
 
@@ -129,8 +129,8 @@ igraph_real_t flow_edmonds_karp(flow_t *f, igraph_integer_t s, igraph_integer_t 
     }
 
     fill_edge_flows(f, flow);
-    free(from_arc);
-    free(q);
+    xfree(from_arc);
+    xfree(q);
     return total;
 }
 
@@ -160,7 +160,7 @@ static bool dinic_levels(const flow_t *f, igraph_integer_t s, igraph_integer_t t
             }
         }
     }
-    free(q);
+    xfree(q);
     return level[t] != -1;
 }
 
@@ -203,8 +203,8 @@ igraph_real_t flow_dinic(flow_t *f, igraph_integer_t s, igraph_integer_t t,
     }
 
     fill_edge_flows(f, flow);
-    free(level);
-    free(iter);
+    xfree(level);
+    xfree(iter);
     return total;
 }
 
@@ -293,8 +293,8 @@ igraph_real_t flow_preflow_push(flow_t *f, igraph_integer_t s, igraph_integer_t 
     }
 
     fill_edge_flows(f, flow);
-    free(h); free(excess); free(in_q); free(q);
-    free(rev_head); free(rev_next);
+    xfree(h); xfree(excess); xfree(in_q); xfree(q);
+    xfree(rev_head); xfree(rev_next);
     return total;
 }
 
@@ -318,6 +318,6 @@ bool *flow_mincut_side(const flow_t *f, igraph_integer_t s)
             }
         }
     }
-    free(q);
+    xfree(q);
     return side;
 }

@@ -57,6 +57,6 @@ igraph_real_t hungarian_solve(const igraph_real_t *cost, igraph_integer_t n,
     }
     igraph_real_t total = -v[0];
 
-    free(a); free(u); free(v); free(minv); free(way); free(match); free(used);
+    xfree(a); xfree(u); xfree(v); xfree(minv); xfree(way); xfree(match); xfree(used);
     return total;
 }

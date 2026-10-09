@@ -9,6 +9,7 @@
 #include "graphcode.h"
 #include "huffman.h"
 #include "mtf.h"
+#include "output.h"
 #include "util.h"
 
 static void usage(const char *prog)
@@ -66,9 +67,12 @@ int main(int argc, char **argv)
         usage(argv[0]);
 
     igraph_set_attribute_table(&igraph_cattribute_table);
-    igraph_t g = read_graph_or_die(input, 0);
+    phase_begin("read");
+    igraph_t g = read_graph_or_die(input, 0, true);
     igraph_integer_t n = (igraph_integer_t)igraph_vcount(&g);
     igraph_integer_t m = (igraph_integer_t)igraph_ecount(&g);
+    phase_end();
+    phase_begin("encode");
 
     bitwriter_t w;
     bitwriter_init(&w);
@@ -81,7 +85,7 @@ int main(int argc, char **argv)
             for (size_t i = 0; i < flat_len; i++) freq[flat[i]]++;
             if (!huffman_encode(flat, flat_len, freq, &w)) {
                 fprintf(stderr, "empty input\n");
-                free(flat);
+                xfree(flat);
                 return 1;
             }
         } else if (!strcmp(algo, "mtf")) {
@@ -89,7 +93,7 @@ int main(int argc, char **argv)
         } else {
             rle_encode(flat, flat_len, &w);
         }
-        free(flat);
+        xfree(flat);
     } else if (!strcmp(algo, "gaps") || !strcmp(algo, "reference") ||
                !strcmp(algo, "interval")) {
         /* sorted adjacency lists per vertex */
@@ -119,9 +123,9 @@ int main(int argc, char **argv)
                 interval_encode_list(&w, u, adj[u], deg[u]);
             }
         }
-        for (igraph_integer_t u = 0; u < n; u++) free(adj[u]);
-        free(adj);
-        free(deg);
+        for (igraph_integer_t u = 0; u < n; u++) xfree(adj[u]);
+        xfree(adj);
+        xfree(deg);
     } else {
         /* integer codes over adjacency values */
         igraph_vector_int_t nb;
@@ -140,12 +144,18 @@ int main(int argc, char **argv)
         igraph_vector_int_destroy(&nb);
     }
 
+    size_t out_bits = bitwriter_nbits(&w);
     bitwriter_finish(&w);
     size_t in_bytes = (size_t)m * 8;   /* naive baseline: 8 bytes per arc */
+    phase_end();
     printf("{\"algorithm\": \"%s\", \"n\": %" IGRAPH_PRId ", \"m\": %" IGRAPH_PRId
-           ", \"in_bytes\": %zu, \"out_bytes\": %zu, \"ratio\": %.3f}\n",
+           ", \"in_bytes\": %zu, \"out_bytes\": %zu, \"ratio\": %.3f"
+           ", \"bits_per_edge\": %.3f",
            algo, n, m, in_bytes, w.n_bytes,
-           (double)w.n_bytes / (double)(in_bytes ? in_bytes : 1));
+           (double)w.n_bytes / (double)(in_bytes ? in_bytes : 1),
+           m ? (double)out_bits / (double)m : 0.0);
+    metrics_json(stdout);
+    printf("\n}\n");
     bitwriter_destroy(&w);
     igraph_destroy(&g);
     return 0;

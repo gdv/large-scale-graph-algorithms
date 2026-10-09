@@ -218,7 +218,7 @@ bool huffman_decode(const uint8_t *bits, size_t n_bytes,
             node = 0;
         }
     }
-    if (rlen != len) { free(res); return false; }
+    if (rlen != len) { xfree(res); return false; }
     *out = res;
     *out_len = rlen;
     return true;

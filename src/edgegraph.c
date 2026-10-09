@@ -21,8 +21,8 @@ void edge_graph_build(edge_graph_t *e, const igraph_t *graph)
 
 void edge_graph_destroy(edge_graph_t *e)
 {
-    free(e->u);
-    free(e->v);
+    xfree(e->u);
+    xfree(e->v);
     e->u = NULL;
     e->v = NULL;
 }

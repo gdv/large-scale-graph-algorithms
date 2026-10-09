@@ -14,7 +14,7 @@ void bitwriter_init(bitwriter_t *w)
 
 void bitwriter_destroy(bitwriter_t *w)
 {
-    free(w->buf);
+    xfree(w->buf);
     w->buf = NULL;
 }
 
@@ -36,6 +36,11 @@ void bitwriter_write_bits(bitwriter_t *w, uint64_t value, unsigned nbits)
 {
     for (unsigned i = nbits; i-- > 0;)
         bitwriter_write(w, (unsigned)((value >> i) & 1));
+}
+
+size_t bitwriter_nbits(const bitwriter_t *w)
+{
+    return w->n_bytes * 8 - ((8 - w->bit_pos) & 7);
 }
 
 void bitwriter_finish(bitwriter_t *w)

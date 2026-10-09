@@ -1,3 +1,4 @@
+#include "util.h"
 #include "greedy.h"
 #include <stdlib.h>
 #include <stdbool.h>
@@ -17,8 +18,7 @@ igraph_integer_t greedy_run(const igraph_t *g, igraph_integer_t *color)
         }
         igraph_integer_t deg = igraph_vector_int_size(&neighbors);
         igraph_integer_t limit = deg + 1;
-        bool *used = calloc((size_t)limit, sizeof(bool));
-        if (!used) { fprintf(stderr, "malloc failed\n"); exit(1); }
+        bool *used = xcalloc((size_t)limit, sizeof(bool));
 
         for (igraph_integer_t i = 0; i < deg; i++) {
             igraph_integer_t w = VECTOR(neighbors)[i];
@@ -31,7 +31,7 @@ igraph_integer_t greedy_run(const igraph_t *g, igraph_integer_t *color)
         while (used[c]) c++;
         color[v] = c;
         if (c > max_color) max_color = c;
-        free(used);
+        xfree(used);
     }
 
     igraph_vector_int_destroy(&neighbors);

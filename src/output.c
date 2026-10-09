@@ -21,5 +21,30 @@ void output_json(FILE *out,
     if (conflicts >= 0) {
         fprintf(out, ",\n  \"conflicts\": %" IGRAPH_PRId, conflicts);
     }
+    metrics_json(out);
+    fprintf(out, "\n}\n");
+}
+
+void metrics_json(FILE *out)
+{
+    fprintf(out, ",\n  \"metrics\": {\n");
+    fprintf(out, "    \"peak_bytes\": %zu,\n", mem_peak());
+    fprintf(out, "    \"live_bytes\": %zu,\n", mem_live());
+    fprintf(out, "    \"total_alloc_bytes\": %zu,\n", mem_total());
+    fprintf(out, "    \"alloc_count\": %zu,\n", mem_count());
+    fprintf(out, "    \"phases\": [");
+    for (size_t i = 0; i < phase_count(); i++) {
+        const mem_phase_t *p = phase_at(i);
+        fprintf(out, "%s\n      {\"name\": \"%s\", \"ms\": %.3f, "
+                     "\"bytes_before\": %zu, \"bytes_after\": %zu, \"bytes_peak\": %zu}",
+                i ? "," : "", p->name, p->ms, p->live_before, p->live_after, p->live_peak);
+    }
+    fprintf(out, "\n    ]\n  }");
+}
+
+void metrics_json_begin(FILE *out)
+{
+    fprintf(out, "{");
+    metrics_json(out);
     fprintf(out, "\n}\n");
 }

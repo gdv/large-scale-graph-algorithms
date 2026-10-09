@@ -1,3 +1,4 @@
+#include "util.h"
 #include "iterated_greedy.h"
 #include "greedy.h"
 #include <stdlib.h>
@@ -27,9 +28,8 @@ igraph_integer_t iterated_greedy_run(const igraph_t *g, igraph_integer_t *color,
 {
     if (!ordering) ordering = "largest";
     igraph_integer_t n = igraph_vcount(g);
-    igraph_integer_t *best = malloc((size_t)n * sizeof(igraph_integer_t));
-    igraph_integer_t *work = malloc((size_t)n * sizeof(igraph_integer_t));
-    if (!best || !work) { fprintf(stderr, "malloc failed\n"); exit(1); }
+    igraph_integer_t *best = xmalloc((size_t)n * sizeof(igraph_integer_t));
+    igraph_integer_t *work = xmalloc((size_t)n * sizeof(igraph_integer_t));
     for (igraph_integer_t v = 0; v < n; v++) { best[v] = -1; work[v] = -1; }
     igraph_integer_t best_colors = greedy_run(g, best);
 
@@ -48,8 +48,7 @@ igraph_integer_t iterated_greedy_run(const igraph_t *g, igraph_integer_t *color,
         for (igraph_integer_t i = 0; i < best_colors; i++) VECTOR(class_order)[i] = i;
 
         if (strcmp(ordering, "largest") == 0) {
-            idx_val_t *tmp = malloc((size_t)best_colors * sizeof(idx_val_t));
-            if (!tmp) { fprintf(stderr, "malloc failed\n"); exit(1); }
+            idx_val_t *tmp = xmalloc((size_t)best_colors * sizeof(idx_val_t));
             for (igraph_integer_t i = 0; i < best_colors; i++) {
                 tmp[i].index = i;
                 tmp[i].value = VECTOR(class_size)[i];
@@ -57,7 +56,7 @@ igraph_integer_t iterated_greedy_run(const igraph_t *g, igraph_integer_t *color,
             cmp_class_sizes_ptr = &class_size;
             qsort(tmp, (size_t)best_colors, sizeof(idx_val_t), cmp_class_size_desc);
             for (igraph_integer_t i = 0; i < best_colors; i++) VECTOR(class_order)[i] = tmp[i].index;
-            free(tmp);
+            xfree(tmp);
         } else if (strcmp(ordering, "reverse") == 0) {
             for (igraph_integer_t i = 0; i < best_colors / 2; i++) {
                 igraph_integer_t tmp = VECTOR(class_order)[i];
@@ -89,8 +88,7 @@ igraph_integer_t iterated_greedy_run(const igraph_t *g, igraph_integer_t *color,
             }
             igraph_integer_t deg = igraph_vector_int_size(&neighbors);
             igraph_integer_t limit = deg + 1;
-            bool *used = calloc((size_t)limit, sizeof(bool));
-            if (!used) { fprintf(stderr, "calloc failed\n"); exit(1); }
+            bool *used = xcalloc((size_t)limit, sizeof(bool));
             for (igraph_integer_t j = 0; j < deg; j++) {
                 igraph_integer_t w = VECTOR(neighbors)[j];
                 if (work[w] >= 0 && work[w] < limit) used[work[w]] = true;
@@ -98,7 +96,7 @@ igraph_integer_t iterated_greedy_run(const igraph_t *g, igraph_integer_t *color,
             igraph_integer_t c = 0;
             while (used[c]) c++;
             work[v] = c;
-            free(used);
+            xfree(used);
         }
 
         igraph_integer_t work_colors = 0;
@@ -117,7 +115,7 @@ igraph_integer_t iterated_greedy_run(const igraph_t *g, igraph_integer_t *color,
 
     igraph_vector_int_destroy(&neighbors);
     memcpy(color, best, (size_t)n * sizeof(igraph_integer_t));
-    free(best);
-    free(work);
+    xfree(best);
+    xfree(work);
     return best_colors;
 }

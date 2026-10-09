@@ -1,3 +1,4 @@
+#include "util.h"
 #include "antcolony.h"
 #include <stdlib.h>
 #include <string.h>
@@ -14,18 +15,15 @@ igraph_integer_t antcolony_run(const igraph_t *g, igraph_integer_t *color,
     igraph_integer_t n = igraph_vcount(g);
     igraph_integer_t k = n;
 
-    double *trail = malloc((size_t)(n * n) * sizeof(double));
-    if (!trail) { fprintf(stderr, "malloc failed\n"); exit(1); }
+    double *trail = xmalloc((size_t)(n * n) * sizeof(double));
     for (igraph_integer_t i = 0; i < n * n; i++) trail[i] = 1.0;
 
-    igraph_integer_t *best_sol = malloc((size_t)n * sizeof(igraph_integer_t));
-    if (!best_sol) { fprintf(stderr, "malloc failed\n"); exit(1); }
+    igraph_integer_t *best_sol = xmalloc((size_t)n * sizeof(igraph_integer_t));
     igraph_integer_t best_feasible = 0;
     igraph_integer_t best_colors = n;
 
-    double *delta = malloc((size_t)(n * n) * sizeof(double));
-    igraph_integer_t *ant_sol = malloc((size_t)n * sizeof(igraph_integer_t));
-    if (!delta || !ant_sol) { fprintf(stderr, "malloc failed\n"); exit(1); }
+    double *delta = xmalloc((size_t)(n * n) * sizeof(double));
+    igraph_integer_t *ant_sol = xmalloc((size_t)n * sizeof(igraph_integer_t));
 
     igraph_vector_int_t neigh;
     igraph_vector_int_init(&neigh, 0);
@@ -39,8 +37,7 @@ igraph_integer_t antcolony_run(const igraph_t *g, igraph_integer_t *color,
             for (igraph_integer_t v = 0; v < n; v++) ant_sol[v] = -1;
 
             for (igraph_integer_t v = 0; v < n; v++) {
-                double *probs = malloc((size_t)k * sizeof(double));
-                if (!probs) { fprintf(stderr, "malloc failed\n"); exit(1); }
+                double *probs = xmalloc((size_t)k * sizeof(double));
                 double sum = 0.0;
 
                 if (igraph_neighbors(g, &neigh, v, IGRAPH_ALL, IGRAPH_NO_LOOPS, false) != IGRAPH_SUCCESS) {
@@ -81,7 +78,7 @@ igraph_integer_t antcolony_run(const igraph_t *g, igraph_integer_t *color,
                 } else {
                     ant_sol[v] = rand() % k;
                 }
-                free(probs);
+                xfree(probs);
             }
 
             igraph_integer_t conflicts = 0;
@@ -112,8 +109,7 @@ igraph_integer_t antcolony_run(const igraph_t *g, igraph_integer_t *color,
 
             if (conflicts == 0 && used_colors < iter_best_colors) {
                 if (!iter_best) {
-                    iter_best = malloc((size_t)n * sizeof(igraph_integer_t));
-                    if (!iter_best) { fprintf(stderr, "malloc failed\n"); exit(1); }
+                    iter_best = xmalloc((size_t)n * sizeof(igraph_integer_t));
                 }
                 memcpy(iter_best, ant_sol, (size_t)n * sizeof(igraph_integer_t));
                 iter_best_colors = used_colors;
@@ -132,7 +128,7 @@ igraph_integer_t antcolony_run(const igraph_t *g, igraph_integer_t *color,
             if (k < 1) k = 1;
         }
 
-        free(iter_best);
+        xfree(iter_best);
         iter_best = NULL;
     }
 
@@ -146,9 +142,9 @@ igraph_integer_t antcolony_run(const igraph_t *g, igraph_integer_t *color,
         *conflicts_out = n;
     }
 
-    free(trail);
-    free(delta);
-    free(ant_sol);
-    free(best_sol);
+    xfree(trail);
+    xfree(delta);
+    xfree(ant_sol);
+    xfree(best_sol);
     return best_feasible ? best_colors : k;
 }

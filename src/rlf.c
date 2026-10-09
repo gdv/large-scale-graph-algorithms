@@ -1,3 +1,4 @@
+#include "util.h"
 #include "rlf.h"
 #include <stdlib.h>
 #include <stdbool.h>
@@ -7,9 +8,8 @@ igraph_integer_t rlf_run(const igraph_t *g, igraph_integer_t *color)
     igraph_integer_t n = igraph_vcount(g);
     for (igraph_integer_t v = 0; v < n; v++) color[v] = -1;
 
-    bool *colored = calloc((size_t)n, sizeof(bool));
-    bool *adj_to_I = calloc((size_t)n, sizeof(bool));
-    if (!colored || !adj_to_I) { fprintf(stderr, "calloc failed\n"); exit(1); }
+    bool *colored = xcalloc((size_t)n, sizeof(bool));
+    bool *adj_to_I = xcalloc((size_t)n, sizeof(bool));
     igraph_vector_int_t neighbors;
     igraph_vector_int_init(&neighbors, 0);
     igraph_integer_t current_color = 0;
@@ -73,7 +73,7 @@ igraph_integer_t rlf_run(const igraph_t *g, igraph_integer_t *color)
     }
 
     igraph_vector_int_destroy(&neighbors);
-    free(colored);
-    free(adj_to_I);
+    xfree(colored);
+    xfree(adj_to_I);
     return current_color;
 }

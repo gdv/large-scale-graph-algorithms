@@ -1,3 +1,4 @@
+#include "util.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -151,7 +152,7 @@ static void test_huffman(void)
     size_t out_len = 0;
     int dek = huffman_decode(w.buf, w.n_bytes, &out, &out_len);
     check("huffman: decodes", dek && out_len == len && memcmp(out, text, len) == 0);
-    free(out);
+    xfree(out);
     bitwriter_destroy(&w);
 
     /* single-symbol input */
@@ -162,7 +163,7 @@ static void test_huffman(void)
     bitwriter_finish(&w);
     dek = huffman_decode(w.buf, w.n_bytes, &out, &out_len);
     check("huffman: single symbol roundtrip", ok && dek && out_len == 4 && out[0] == 'a');
-    free(out);
+    xfree(out);
     bitwriter_destroy(&w);
 }
 
@@ -178,7 +179,7 @@ static void test_mtf_rle(void)
     size_t out_len = 0;
     int ok = mtf_decode(w.buf, w.n_bytes, &out, &out_len);
     check("mtf: roundtrip", ok && out_len == len && memcmp(out, text, len) == 0);
-    free(out);
+    xfree(out);
     bitwriter_destroy(&w);
 
     /* RLE on the byte 0b00001111 (8 bits: 0-run of 4, 1-run of 4) */
@@ -188,7 +189,7 @@ static void test_mtf_rle(void)
     bitwriter_finish(&w);
     ok = rle_decode(w.buf, w.n_bytes, &out, &out_len);
     check("rle: roundtrip", ok && out_len == 1 && out[0] == data);
-    free(out);
+    xfree(out);
     bitwriter_destroy(&w);
 
     /* checkerboard */
@@ -198,7 +199,7 @@ static void test_mtf_rle(void)
     bitwriter_finish(&w);
     ok = rle_decode(w.buf, w.n_bytes, &out, &out_len);
     check("rle: checkerboard", ok && out_len == 1 && out[0] == cb);
-    free(out);
+    xfree(out);
     bitwriter_destroy(&w);
 }
 

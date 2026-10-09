@@ -1,3 +1,4 @@
+#include "util.h"
 #include "maxcut.h"
 
 igraph_integer_t maxcut_value(const edge_graph_t *g, const bool *side)
@@ -27,6 +28,6 @@ igraph_integer_t maxcut_best(const edge_graph_t *g, rng_t *rng,
             for (igraph_integer_t v = 0; v < g->n; v++) best_side[v] = side[v];
         }
     }
-    free(side);
+    xfree(side);
     return best;
 }

@@ -1,3 +1,4 @@
+#include "util.h"
 #include "tabucol.h"
 #include <stdlib.h>
 #include <string.h>
@@ -14,12 +15,10 @@ igraph_integer_t tabucol_run(const igraph_t *g, igraph_integer_t *color,
     for (igraph_integer_t v = 0; v < n; v++)
         color[v] = rand() % num_colors;
 
-    igraph_integer_t *best = malloc((size_t)n * sizeof(igraph_integer_t));
-    if (!best) { fprintf(stderr, "malloc failed\n"); exit(1); }
+    igraph_integer_t *best = xmalloc((size_t)n * sizeof(igraph_integer_t));
     memcpy(best, color, (size_t)n * sizeof(igraph_integer_t));
 
-    igraph_integer_t *tabu = calloc((size_t)(n * num_colors), sizeof(igraph_integer_t));
-    if (!tabu) { fprintf(stderr, "calloc failed\n"); exit(1); }
+    igraph_integer_t *tabu = xcalloc((size_t)(n * num_colors), sizeof(igraph_integer_t));
 
     igraph_vector_int_t neigh;
     igraph_vector_int_init(&neigh, 0);
@@ -98,7 +97,7 @@ igraph_integer_t tabucol_run(const igraph_t *g, igraph_integer_t *color,
     igraph_vector_int_destroy(&neigh);
     memcpy(color, best, (size_t)n * sizeof(igraph_integer_t));
     *conflicts_out = best_conflicts;
-    free(best);
-    free(tabu);
+    xfree(best);
+    xfree(tabu);
     return num_colors;
 }

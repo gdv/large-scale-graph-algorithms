@@ -89,8 +89,8 @@ igraph_integer_t matching_hopcroft_karp(const csr_t *g, const bool *side,
         size += added;
     }
 
-    free(dist);
-    free(q);
+    xfree(dist);
+    xfree(q);
     return size;
 }
 

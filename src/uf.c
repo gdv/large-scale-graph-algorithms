@@ -33,8 +33,8 @@ void uf_union(uf_t *u, igraph_integer_t a, igraph_integer_t b)
 
 void uf_destroy(uf_t *u)
 {
-    free(u->parent);
-    free(u->rank);
+    xfree(u->parent);
+    xfree(u->rank);
     u->parent = NULL;
     u->rank = NULL;
 }

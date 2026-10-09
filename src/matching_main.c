@@ -6,6 +6,7 @@
 #include "csr.h"
 #include "graph_io.h"
 #include "hungarian.h"
+#include "output.h"
 #include "matching.h"
 #include "util.h"
 
@@ -31,8 +32,11 @@ int main(int argc, char **argv)
         usage(argv[0]);
 
     igraph_set_attribute_table(&igraph_cattribute_table);
-    igraph_t g = read_graph_or_die(input, 0);
+    phase_begin("read");
+    igraph_t g = read_graph_or_die(input, 0, false);
     igraph_integer_t n = (igraph_integer_t)igraph_vcount(&g);
+    phase_end();
+    phase_begin("build");
 
     if (!strcmp(algo, "hungarian")) {
         /* cost matrix from the "weight" attribute; edges without the
@@ -59,15 +63,20 @@ int main(int argc, char **argv)
             if (cost[i] == IGRAPH_INFINITY) cost[i] = 0.0;
 
         igraph_integer_t *assignment = xmalloc((size_t)n * sizeof(igraph_integer_t));
+        phase_end();
+        phase_begin("solve");
         igraph_real_t total = hungarian_solve(cost, n, assignment);
+        phase_end();
         printf("{\"algorithm\": \"hungarian\", \"n\": %" IGRAPH_PRId ", \"total\": %g,\n",
                n, total);
         printf(" \"assignment\": [");
         for (igraph_integer_t i = 0; i < n; i++)
             printf("%s%" IGRAPH_PRId, i ? ", " : "", assignment[i]);
-        printf("]}\n");
-        free(assignment);
-        free(cost);
+        printf("]");
+        metrics_json(stdout);
+        printf("\n}\n");
+        xfree(assignment);
+        xfree(cost);
         return 0;
     }
 
@@ -85,21 +94,26 @@ int main(int argc, char **argv)
 
     igraph_integer_t *ml = xmalloc((size_t)n * sizeof(igraph_integer_t));
     igraph_integer_t *mr = xmalloc((size_t)n * sizeof(igraph_integer_t));
+    phase_end();
+    phase_begin("solve");
     igraph_integer_t size = 0;
     if (!strcmp(algo, "hopcroftkarp"))
         size = matching_hopcroft_karp(&c, side, ml, mr);
     else
         size = matching_via_flow(&c, side, ml, mr);
+    phase_end();   /* before the JSON printing: we time the algorithm only */
 
     printf("{\"algorithm\": \"%s\", \"n\": %" IGRAPH_PRId ", \"size\": %" IGRAPH_PRId ",\n",
            algo, n, size);
     printf(" \"matching\": [");
     for (igraph_integer_t i = 0; i < n; i++)
         printf("%s%" IGRAPH_PRId, i ? ", " : "", ml[i]);
-    printf("]}\n");
+    printf("]");
+    metrics_json(stdout);
+    printf("\n}\n");
 
     igraph_vector_bool_destroy(&types);
-    free(side); free(ml); free(mr);
+    xfree(side); xfree(ml); xfree(mr);
     csr_destroy(&c);
     return 0;
 }

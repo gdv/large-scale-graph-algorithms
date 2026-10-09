@@ -1,3 +1,4 @@
+#include "util.h"
 #include "sa.h"
 #include <stdlib.h>
 #include <math.h>
@@ -38,8 +39,7 @@ igraph_integer_t sa1_run(const igraph_t *g, igraph_integer_t *color,
     for (igraph_integer_t v = 0; v < n; v++)
         color[v] = rand() % num_colors;
 
-    igraph_integer_t *best = malloc((size_t)n * sizeof(igraph_integer_t));
-    if (!best) { fprintf(stderr, "malloc failed\n"); exit(1); }
+    igraph_integer_t *best = xmalloc((size_t)n * sizeof(igraph_integer_t));
     memcpy(best, color, (size_t)n * sizeof(igraph_integer_t));
 
     igraph_integer_t current_conflicts = count_conflicts(g, color);
@@ -70,7 +70,7 @@ igraph_integer_t sa1_run(const igraph_t *g, igraph_integer_t *color,
 
     memcpy(color, best, (size_t)n * sizeof(igraph_integer_t));
     *conflicts_out = best_conflicts;
-    free(best);
+    xfree(best);
     return num_colors;
 }
 
@@ -93,8 +93,7 @@ igraph_integer_t sa2_run(const igraph_t *g, igraph_integer_t *color,
     for (igraph_integer_t v = 0; v < n; v++)
         color[v] = rand() % num_colors;
 
-    igraph_integer_t *best = malloc((size_t)n * sizeof(igraph_integer_t));
-    if (!best) { fprintf(stderr, "malloc failed\n"); exit(1); }
+    igraph_integer_t *best = xmalloc((size_t)n * sizeof(igraph_integer_t));
     memcpy(best, color, (size_t)n * sizeof(igraph_integer_t));
 
     igraph_integer_t current_uncolored = count_uncolored(color, n);
@@ -111,7 +110,7 @@ igraph_integer_t sa2_run(const igraph_t *g, igraph_integer_t *color,
             continue;
         }
 
-        igraph_integer_t *backup = malloc((size_t)n * sizeof(igraph_integer_t));
+        igraph_integer_t *backup = xmalloc((size_t)n * sizeof(igraph_integer_t));
         memcpy(backup, color, (size_t)n * sizeof(igraph_integer_t));
 
         color[v] = rand() % num_colors;
@@ -134,10 +133,10 @@ igraph_integer_t sa2_run(const igraph_t *g, igraph_integer_t *color,
                 best_uncolored = current_uncolored;
                 memcpy(best, color, (size_t)n * sizeof(igraph_integer_t));
             }
-            free(backup);
+            xfree(backup);
         } else {
             memcpy(color, backup, (size_t)n * sizeof(igraph_integer_t));
-            free(backup);
+            xfree(backup);
         }
         T *= alpha;
     }
@@ -145,6 +144,6 @@ igraph_integer_t sa2_run(const igraph_t *g, igraph_integer_t *color,
     igraph_vector_int_destroy(&neigh);
     memcpy(color, best, (size_t)n * sizeof(igraph_integer_t));
     *conflicts_out = best_uncolored;
-    free(best);
+    xfree(best);
     return num_colors;
 }

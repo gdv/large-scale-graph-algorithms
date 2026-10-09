@@ -97,7 +97,7 @@ void rle_encode(const uint8_t *data, size_t n_bytes, bitwriter_t *w)
     for (uint64_t i = 0; i < n_runs; i++)
         elias_gamma_encode(w, rl[i] + 1);      /* +1 so we can store 0 */
 
-    free(rl);
+    xfree(rl);
 }
 
 bool rle_decode(const uint8_t *bits, size_t n_bytes, uint8_t **out, size_t *out_len)
@@ -119,7 +119,7 @@ bool rle_decode(const uint8_t *bits, size_t n_bytes, uint8_t **out, size_t *out_
         }
         bit = 1 - bit;
     }
-    if (idx != n_bits) { free(res); return false; }
+    if (idx != n_bits) { xfree(res); return false; }
     *out = res;
     *out_len = (n_bits + 7) / 8;
     return true;

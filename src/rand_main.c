@@ -6,6 +6,7 @@
 #include "edgegraph.h"
 #include "graph_io.h"
 #include "karger.h"
+#include "output.h"
 #include "maxcut.h"
 #include "util.h"
 
@@ -39,10 +40,13 @@ int main(int argc, char **argv)
     }
 
     igraph_set_attribute_table(&igraph_cattribute_table);
-    igraph_t g = read_graph_or_die(input, 0);
+    phase_begin("read");
+    igraph_t g = read_graph_or_die(input, 0, true);
     edge_graph_t e;
-    edge_graph_build(&e, &g);
+    edge_graph_build(&e, &g);      /* multigraph: parallel edges are the point */
     igraph_destroy(&g);
+    phase_end();
+    phase_begin("solve");
 
     rng_t rng;
     rng_seed(&rng, seed);
@@ -51,17 +55,20 @@ int main(int argc, char **argv)
     if (!strcmp(algo, "maxcut")) {
         igraph_integer_t v = maxcut_best(&e, &rng, trials, side);
         printf("{\"algorithm\": \"maxcut\", \"value\": %" IGRAPH_PRId
-               ", \"m\": %" IGRAPH_PRId "}\n", v, e.m);
+               ", \"m\": %" IGRAPH_PRId, v, e.m);
     } else if (!strcmp(algo, "karger")) {
         igraph_integer_t c = karger_mincut(&e, &rng, trials, side);
         printf("{\"algorithm\": \"karger\", \"cut\": %" IGRAPH_PRId
-               ", \"trials\": %" IGRAPH_PRId "}\n", c, trials);
+               ", \"trials\": %" IGRAPH_PRId, c, trials);
     } else {
         igraph_integer_t c = karger_stein(&e, &rng);
-        printf("{\"algorithm\": \"kargerstein\", \"cut\": %" IGRAPH_PRId "}\n", c);
+        printf("{\"algorithm\": \"kargerstein\", \"cut\": %" IGRAPH_PRId, c);
     }
+    phase_end();
+    metrics_json(stdout);
+    printf("\n}\n");
 
-    free(side);
+    xfree(side);
     edge_graph_destroy(&e);
     return 0;
 }

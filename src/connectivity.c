@@ -62,12 +62,12 @@ void scc_run(const csr_t *g, scc_result_t *res)
     }
     res->n_comp = n_comp;
 
-    free(idx); free(low); free(onstack); free(frames); free(stk);
+    xfree(idx); xfree(low); xfree(onstack); xfree(frames); xfree(stk);
 }
 
 void scc_result_destroy(scc_result_t *res)
 {
-    free(res->comp);
+    xfree(res->comp);
     res->comp = NULL;
 }
 
@@ -128,12 +128,12 @@ void articulation_points_run(const csr_t *g, ap_result_t *res)
         res->is_ap[s] = (root_children >= 2);
     }
 
-    free(depth); free(low); free(frames);
+    xfree(depth); xfree(low); xfree(frames);
 }
 
 void ap_result_destroy(ap_result_t *res)
 {
-    free(res->is_ap);
+    xfree(res->is_ap);
     res->is_ap = NULL;
 }
 
@@ -209,13 +209,13 @@ void biconnected_run(const csr_t *g, biconnected_result_t *res)
     res->n_blocks = n_blocks;
     res->block_edges = block_edges;
 
-    free(depth); free(low); free(frames); free(edge_stack);
+    xfree(depth); xfree(low); xfree(frames); xfree(edge_stack);
 }
 
 void biconnected_result_destroy(biconnected_result_t *res)
 {
-    free(res->block);
-    free(res->block_edges);
+    xfree(res->block);
+    xfree(res->block_edges);
     res->block = NULL;
     res->block_edges = NULL;
 }
@@ -271,12 +271,12 @@ void bridges_run(const csr_t *g, bridges_result_t *res)
         }
     }
 
-    free(depth); free(low); free(frames);
+    xfree(depth); xfree(low); xfree(frames);
 }
 
 void bridges_result_destroy(bridges_result_t *res)
 {
-    free(res->is_bridge);
+    xfree(res->is_bridge);
     res->is_bridge = NULL;
 }
 
@@ -315,11 +315,11 @@ void edge2_components_run(const csr_t *g, edge2_result_t *res)
     res->n_comp = comp;
 
     bridges_result_destroy(&br);
-    free(q);
+    xfree(q);
 }
 
 void edge2_result_destroy(edge2_result_t *res)
 {
-    free(res->comp);
+    xfree(res->comp);
     res->comp = NULL;
 }

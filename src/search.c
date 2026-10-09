@@ -29,12 +29,12 @@ void bfs_run(const csr_t *g, igraph_integer_t source, bfs_result_t *res)
             }
         }
     }
-    free(q);
+    xfree(q);
 }
 
 void bfs_result_destroy(bfs_result_t *res)
 {
-    free(res->parent); free(res->dist); free(res->order);
+    xfree(res->parent); xfree(res->dist); xfree(res->order);
     res->parent = res->dist = res->order = NULL;
 }
 
@@ -91,12 +91,12 @@ void dfs_run(const csr_t *g, igraph_integer_t source, dfs_result_t *res)
         }
         comp++;
     }
-    free(stack);
+    xfree(stack);
 }
 
 void dfs_result_destroy(dfs_result_t *res)
 {
-    free(res->parent); free(res->dis); free(res->fin); free(res->comp);
+    xfree(res->parent); xfree(res->dis); xfree(res->fin); xfree(res->comp);
     res->parent = res->dis = res->fin = res->comp = NULL;
 }
 
@@ -187,7 +187,7 @@ bool astar_run(const csr_t *g, igraph_integer_t source, igraph_integer_t target,
         }
     }
 
-    free(closed);
-    free(heap);
+    xfree(closed);
+    xfree(heap);
     return found;
 }

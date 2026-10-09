@@ -47,15 +47,15 @@ void csr_build(csr_t *g, const igraph_t *graph, bool directed)
         }
     }
 
-    free(pos);
+    xfree(pos);
     igraph_vector_int_destroy(&elist);
 }
 
 void csr_destroy(csr_t *g)
 {
-    free(g->offsets);
-    free(g->targets);
-    free(g->rev);
+    xfree(g->offsets);
+    xfree(g->targets);
+    xfree(g->rev);
     g->offsets = NULL;
     g->targets = NULL;
     g->rev     = NULL;

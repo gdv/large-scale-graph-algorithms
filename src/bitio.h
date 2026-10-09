@@ -20,6 +20,10 @@ void bitwriter_init(bitwriter_t *w);
 void bitwriter_destroy(bitwriter_t *w);
 void bitwriter_write(bitwriter_t *w, unsigned bit);
 void bitwriter_write_bits(bitwriter_t *w, uint64_t value, unsigned nbits);
+/* Bits actually written so far, ignoring the zero padding of the current
+ * byte. This -- not n_bytes -- is what a compression ratio should be based
+ * on. */
+size_t bitwriter_nbits(const bitwriter_t *w);
 /* pad the current byte with zero bits; buffer is then ready to read. */
 void bitwriter_finish(bitwriter_t *w);
 
